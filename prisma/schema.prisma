@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://admin:admin123@localhost:5432/NEWDB"
+}
+
+enum Role {
+  Client
+  SuperAdmin
+  Admin
+  Technician
+}
+
+model User {
+  id                      Int             @id @default(autoincrement())
+  email                   String          @unique
+  first_name              String
+  last_name               String
+  username                String          @unique
+  user_type               Role //enum 
+  password                String
+  color_code              String?
+  isSuperAdmin            Boolean
+  see_other_tech          Boolean?
+  manage_admin_panel      Boolean?
+  manage_general_settings Boolean?
+  manage_route_stops      Boolean?
+  rearrange_routes        Boolean?
+  admin_id                Int?
+  admin                   User?           @relation("AdminToTechnician", fields: [admin_id], references: [id])
+  Technicians             User[]          @relation("AdminToTechnician")
+  Customer                Customer[]
+  WorkOrderType           WorkOrderType[]
+  createdAt               DateTime        @default(now()) // * default value (now)
+  updatedAt               DateTime        @updatedAt
+}
+
+model Customer {
+  customer_id         Int      @id @default(autoincrement())
+  admin_id            Int
+  admin               User     @relation(fields: [admin_id], references: [id])
+  first_name          String
+  last_name           String
+  city                String
+  state               String
+  zipcode             String
+  email               String   @unique
+  mobile_no_primary   String
+  mobile_no_secondary String?
+  company_name        String?
+  company_address     String?
+  billing_address     String?
+  billing_details     String?
+  createdAt           DateTime @default(now()) // * default value (now)
+  updatedAt           DateTime @updatedAt
+}
+
+model WorkOrderType {
+  work_order_type_id     Int            @id @default(autoincrement())
+  admin_Id               Int
+  admin                  User           @relation(fields: [userId], references: [id])
+  name                   String
+  color_code             String
+  recurrence             String
+  labor_cost             Float
+  estimated_time_in_mins Int
+  default_email_subject  String
+  default_email_message  String
+  check_list             String[]
+  needs_invoiced         Boolean
+  alert_office           Boolean
+  photo_required         Boolean
+  email_to_customer      Boolean
+  allow_tech             Boolean
+  userId                 Int
+  ShoppingItem           ShoppingItem[]
+  createdAt              DateTime       @default(now()) // * default value (now)
+  updatedAt              DateTime       @updatedAt
+}
+
+model ShoppingItem {
+  shopping_item_id   Int            @id @default(autoincrement())
+  work_order_type    WorkOrderType? @relation(fields: [work_order_type_id], references: [work_order_type_id])
+  work_order_type_id Int?
+  description        String
+  purchased          Boolean
+  item_type          String
+  assigned_to        String
+  product_images     String[]
+  createdAt          DateTime       @default(now()) // * default value (now)
+  updatedAt          DateTime       @updatedAt
+}
