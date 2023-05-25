@@ -9,7 +9,7 @@ const getShoppingItems = TrackError(async (req, res, next) => {
 })
 
 const getShoppingItem = TrackError(async (req, res, next) => {
-    const id = parseInt(req.params.id)
+    const id = req.params.id
     const result = await prismaClient.shoppingItem.findFirst({ where: { shopping_item_id: id } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Work Order Type doesnt not exists" });
@@ -32,7 +32,7 @@ const createShoppingItem = TrackError(async (req, res, next) => {
 
 const deleteShoppingItemByID = TrackError(async (req, res, next) => {
     try {
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         const result = await prismaClient.shoppingItem.delete({ where: { shopping_item_id: id } })
         res.status(200).send(result)
 
@@ -46,15 +46,14 @@ const deleteShoppingItemByID = TrackError(async (req, res, next) => {
 })
 
 const deleteAllShoppingItems = TrackError(async (req, res, next) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id
     const result = await prismaClient.shoppingItem.deleteMany()
     res.status(200).send(result)
 })
 
 const updateShoppingItemByID = TrackError(async (req, res, next) => {
     try {
-        console.log(req.body)
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         if (req.files && req.files.length !== 0) {
             const imageNames = req.files.map((image) => image.filename)
             req.body.product_images = imageNames

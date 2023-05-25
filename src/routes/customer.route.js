@@ -1,11 +1,7 @@
 const express = require("express")
 const router = express.Router();
-const { customerController } = require("../controllers/")
-
-
-
-
-
+const { customerController } = require("../controllers/");
+const { verify } = require("../middleware/auth");
 
 /**
  * @swagger
@@ -20,14 +16,14 @@ const { customerController } = require("../controllers/")
  * 
  */
 router.route("/")
-    .get(customerController.getCustomers)
-    .post(customerController.createCustomer)
+    .get(verify(), customerController.getCustomers)
+    .post(verify(), customerController.createCustomer)
 
 
 router.route("/:id")
-    .get(customerController.getCustomer)
-    .delete(customerController.deleteCustomerByID)
-    .patch(customerController.updateCustomerByID);
+    .get(verify(), customerController.getCustomer)
+    .delete(verify(), customerController.deleteCustomerByID)
+    .patch(verify(), customerController.updateCustomerByID);
 
 
 

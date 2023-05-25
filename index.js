@@ -23,8 +23,6 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 
-
-
 app.use(cors());
 app.options("*", cors());
 app.use(cors({ origin: true }));

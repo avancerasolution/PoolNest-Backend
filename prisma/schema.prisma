@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://admin:admin123@localhost:5432/NEWDB"
+  url      = "postgresql://admin:admin123@localhost:5432/mydb"
 }
 
 enum Role {
@@ -18,7 +18,7 @@ enum Role {
 }
 
 model User {
-  id                      Int             @id @default(autoincrement())
+  id                      String          @id @default(uuid())
   email                   String          @unique
   first_name              String
   last_name               String
@@ -32,18 +32,20 @@ model User {
   manage_general_settings Boolean?
   manage_route_stops      Boolean?
   rearrange_routes        Boolean?
-  admin_id                Int?
+  admin_id                String?
   admin                   User?           @relation("AdminToTechnician", fields: [admin_id], references: [id])
   Technicians             User[]          @relation("AdminToTechnician")
   Customer                Customer[]
   WorkOrderType           WorkOrderType[]
   createdAt               DateTime        @default(now()) // * default value (now)
   updatedAt               DateTime        @updatedAt
+  Reading                 Reading[]
+  Dosage                  Dosage[]
 }
 
 model Customer {
-  customer_id         Int      @id @default(autoincrement())
-  admin_id            Int
+  customer_id         String   @id @default(uuid())
+  admin_id            String
   admin               User     @relation(fields: [admin_id], references: [id])
   first_name          String
   last_name           String
@@ -62,9 +64,9 @@ model Customer {
 }
 
 model WorkOrderType {
-  work_order_type_id     Int            @id @default(autoincrement())
-  admin_Id               Int
-  admin                  User           @relation(fields: [userId], references: [id])
+  work_order_type_id     String         @id @default(uuid())
+  admin_id               String
+  admin                  User           @relation(fields: [admin_id], references: [id])
   name                   String
   color_code             String
   recurrence             String
@@ -78,16 +80,16 @@ model WorkOrderType {
   photo_required         Boolean
   email_to_customer      Boolean
   allow_tech             Boolean
-  userId                 Int
+  userId                 Int?
   ShoppingItem           ShoppingItem[]
   createdAt              DateTime       @default(now()) // * default value (now)
   updatedAt              DateTime       @updatedAt
 }
 
 model ShoppingItem {
-  shopping_item_id   Int            @id @default(autoincrement())
+  shopping_item_id   String         @id @default(uuid())
   work_order_type    WorkOrderType? @relation(fields: [work_order_type_id], references: [work_order_type_id])
-  work_order_type_id Int?
+  work_order_type_id String?
   description        String
   purchased          Boolean
   item_type          String
@@ -95,4 +97,27 @@ model ShoppingItem {
   product_images     String[]
   createdAt          DateTime       @default(now()) // * default value (now)
   updatedAt          DateTime       @updatedAt
+}
+
+model Dosage {
+  dosage_id             String  @id @default(uuid())
+  admin_id              String
+  admin                 User    @relation(fields: [admin_id], references: [id])
+  name                  String
+  description           String
+  unit_of_measurement   String
+  cost_per_unit         Int
+  include_service_price Boolean
+  price_per_unit        Int
+  values                Int[]
+}
+
+model Reading {
+  reading_id          String @id @default(uuid())
+  admin_id            String
+  admin               User   @relation(fields: [admin_id], references: [id])
+  name                String
+  description         String
+  unit_of_measurement String
+  values              Int[]
 }
