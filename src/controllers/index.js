@@ -5,3 +5,4 @@ module.exports.shoppingItemController = require("./shoppingItem.controller")
 module.exports.readingController = require("./reading.controller");
 module.exports.dosageController = require("./dosageController")
 module.exports.authController = require("./auth.controller");
+module.exports.serviceChecklistController = require("./serviceChecklist.controller");

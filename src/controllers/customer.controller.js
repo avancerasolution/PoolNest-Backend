@@ -59,6 +59,11 @@ const deleteAllCustomers = TrackError(async (req, res, next) => {
 
 const updateCustomerByID = TrackError(async (req, res, next) => {
     try {
+        if (req.body.email) {
+            if (await emailExist(req.body.email)) {
+                return res.status(400).send({ success: false, message: "customer with this email already exists" })
+            }
+        }
         const id = req.params.id
         const result = await prismaClient.customer.update({ where: { customer_id: id }, data: req.body })
         res.status(200).send(result)
@@ -70,6 +75,5 @@ const updateCustomerByID = TrackError(async (req, res, next) => {
         res.status(400).send({ success: false, message: e.message })
     }
 })
-
 
 module.exports = { getCustomers, createCustomer, deleteCustomerByID, getCustomer, updateCustomerByID, deleteAllCustomers }

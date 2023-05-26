@@ -2,7 +2,8 @@ const express = require("express")
 const router = express.Router();
 const { readingController } = require("../controllers");
 const { verify } = require("../middleware/auth");
-
+const validate = require("../middleware/validate")
+const readingValidation = require("../validations/reading.validation")
 
 /**
  * @swagger
@@ -17,13 +18,12 @@ const { verify } = require("../middleware/auth");
  * 
  */
 router.route("/")
-    .get(verify(), readingController.getReadings)
-    .post(verify(), readingController.createReading)
+    .get(verify(), validate(readingValidation.getReadings), readingController.getReadings)
+    .post(verify(), validate(readingValidation.createReading), readingController.createReading)
 router.route("/:id")
-    .get(verify(), readingController.getReading)
-    .delete(verify(), readingController.deleteReadingByID)
-    .patch(verify(), readingController.updateReadingByID);
-
+    .get(verify(), validate(readingValidation.getReading), readingController.getReading)
+    .delete(verify(), validate(readingValidation.getReading), readingController.deleteReadingByID)
+    .patch(verify(), validate(readingValidation.updateReading), readingController.updateReadingByID);
 
 
 

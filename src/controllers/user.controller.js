@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt")
 
 
 const getUsers = async (req, res, next) => {
-    const filters = pick(req.query, ["email", "name", "user_type", "color_code", "first_name", "last_name"])
+    const filters = pick(req.query, ["email", "user_type", "color_code", "first_name", "last_name"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
@@ -67,6 +67,16 @@ const deleteAllUsers = TrackError(async (req, res, next) => {
 
 const updateUserByID = TrackError(async (req, res, next) => {
     try {
+        if (req.body.username) {
+            if (await usernameExist(req.body.username)) {
+                return res.status(400).send("username already exists")
+            }
+        }
+        if (req.body.email) {
+            if (await emailExist(req.body.email)) {
+                return res.status(400).send("email already exists")
+            }
+        }
         const id = req.params.id
         const result = await prismaClient.user.update({ where: { id: id }, data: req.body })
         res.status(200).send(result)

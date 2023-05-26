@@ -1,6 +1,9 @@
 const express = require("express")
 const router = express.Router();
 const { workOrderTypeController } = require("../controllers")
+const { verify } = require("../middleware/auth")
+const validate = require("../middleware/validate")
+const workOrderTypeValidation = require("../validations/workOrderType.validation")
 
 
 /**
@@ -15,10 +18,14 @@ const { workOrderTypeController } = require("../controllers")
  *          
  * 
  */
+router.route("/")
+    .get(verify(), validate(workOrderTypeValidation.getWorkOrderTypes), workOrderTypeController.getWorkOrderTypes)
+    .post(verify(), validate(workOrderTypeValidation.createWorkOrderType), workOrderTypeController.createWorkOrderType)
 
-router.route("/").get(workOrderTypeController.getWorkOrderTypes).post(workOrderTypeController.createWorkOrderType)
-
-router.route("/:id").get(workOrderTypeController.getWorkOrderType).delete(workOrderTypeController.deleteWorkOrderTypeByID).patch(workOrderTypeController.updateWorkOrderTypeByID);
+router.route("/:id")
+    .get(verify(), validate(workOrderTypeValidation.getWorkOrderType), workOrderTypeController.getWorkOrderType)
+    .delete(verify(), validate(workOrderTypeValidation.getWorkOrderType), workOrderTypeController.deleteWorkOrderTypeByID)
+    .patch(verify(), validate(workOrderTypeValidation.updateWorkOrderType), workOrderTypeController.updateWorkOrderTypeByID);
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const prisma = require("../utils/prisma.client")
-async function paginate(modelName, filters, { pageNumber = 1, limit = 10, sortBy = "id", sortOrder = "asc" }) {
+async function paginate(modelName, filters, { pageNumber = 1, limit = 10, sortBy = "id", sortOrder = "asc" }, include = null) {
     const pageSize = limit;
     const skip = (pageNumber - 1) * pageSize;
 
@@ -13,6 +13,7 @@ async function paginate(modelName, filters, { pageNumber = 1, limit = 10, sortBy
         where: filters,
         skip: skip,
         take: pageSize,
+        include: include,
         orderBy: {
             [sortBy]: sortOrder,
         },

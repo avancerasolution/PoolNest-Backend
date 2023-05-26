@@ -6,6 +6,7 @@ const shoppingItemRoute = require("./shoppingItem.route")
 const dosageRoute = require("./dosage.route")
 const readingRoute = require("./reading.route")
 const authRoute = require("./auth.route")
+const serviceChecklistRoute = require("./serviceChecklist.route")
 const router = express.Router();
 
 router.use("/user", userRoute)
@@ -15,6 +16,7 @@ router.use("/shoppingItem", shoppingItemRoute)
 router.use("/dosage", dosageRoute)
 router.use("/reading", readingRoute)
 router.use("/auth", authRoute)
+router.use("/serviceChecklist", serviceChecklistRoute)
 
 
 module.exports = router;

@@ -18,29 +18,30 @@ enum Role {
 }
 
 model User {
-  id                      String          @id @default(uuid())
-  email                   String          @unique
+  id                      String             @id @default(uuid())
+  email                   String             @unique
   first_name              String
   last_name               String
-  username                String          @unique
+  username                String             @unique
   user_type               Role //enum 
   password                String
+  is_active               Boolean            @default(true)
   color_code              String?
-  isSuperAdmin            Boolean
   see_other_tech          Boolean?
   manage_admin_panel      Boolean?
   manage_general_settings Boolean?
   manage_route_stops      Boolean?
   rearrange_routes        Boolean?
   admin_id                String?
-  admin                   User?           @relation("AdminToTechnician", fields: [admin_id], references: [id])
-  Technicians             User[]          @relation("AdminToTechnician")
+  admin                   User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
+  Technicians             User[]             @relation("AdminToTechnician")
   Customer                Customer[]
   WorkOrderType           WorkOrderType[]
-  createdAt               DateTime        @default(now()) // * default value (now)
-  updatedAt               DateTime        @updatedAt
+  createdAt               DateTime           @default(now()) // * default value (now)
+  updatedAt               DateTime           @updatedAt
   Reading                 Reading[]
   Dosage                  Dosage[]
+  ServiceChecklist        ServiceChecklist[]
 }
 
 model Customer {
@@ -100,9 +101,9 @@ model ShoppingItem {
 }
 
 model Dosage {
-  dosage_id             String  @id @default(uuid())
+  dosage_id             String   @id @default(uuid())
   admin_id              String
-  admin                 User    @relation(fields: [admin_id], references: [id])
+  admin                 User     @relation(fields: [admin_id], references: [id])
   name                  String
   description           String
   unit_of_measurement   String
@@ -110,14 +111,28 @@ model Dosage {
   include_service_price Boolean
   price_per_unit        Int
   values                Int[]
+  createdAt             DateTime @default(now()) // * default value (now)
+  updatedAt             DateTime @updatedAt
 }
 
 model Reading {
-  reading_id          String @id @default(uuid())
+  reading_id          String   @id @default(uuid())
   admin_id            String
-  admin               User   @relation(fields: [admin_id], references: [id])
+  admin               User     @relation(fields: [admin_id], references: [id])
   name                String
   description         String
   unit_of_measurement String
   values              Int[]
+  createdAt           DateTime @default(now()) // * default value (now)
+  updatedAt           DateTime @updatedAt
+}
+
+model ServiceChecklist {
+  service_checklist_id    String   @id @default(uuid())
+  description             String
+  description_on_complete String
+  admin                   User     @relation(fields: [admin_id], references: [id])
+  admin_id                String
+  createdAt               DateTime @default(now()) // * default value (now)
+  updatedAt               DateTime @updatedAt
 }

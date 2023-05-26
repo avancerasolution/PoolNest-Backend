@@ -10,7 +10,7 @@ const getWorkOrderTypes = TrackError(async (req, res, next) => {
         filters.admin_id = req.user.admin_id;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
-    if (!options.sortBy) { options.sortBy = "customer_id" }
+    if (!options.sortBy) { options.sortBy = "work_order_type_id" }
     const result = await paginate("workOrderType", filters, options)
     res.status(200).send({ success: true, result });
 

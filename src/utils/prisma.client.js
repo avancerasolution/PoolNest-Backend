@@ -18,7 +18,7 @@ const onServerStartUp = async () => {
         username: process.env.CLIENT_USERNAME,
         email: process.env.CLIENT_EMAIL,
         user_type: "Client",
-        isSuperAdmin: true,
+        // isSuperAdmin: true,
         see_other_tech: true,
         manage_admin_panel: true,
         manage_general_settings: true,

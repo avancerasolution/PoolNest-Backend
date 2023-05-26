@@ -2,6 +2,8 @@ const express = require("express")
 const router = express.Router();
 const { customerController } = require("../controllers/");
 const { verify } = require("../middleware/auth");
+const customerValidation = require("../validations/customer.validation");
+const validate = require("../middleware/validate");
 
 /**
  * @swagger
@@ -16,14 +18,14 @@ const { verify } = require("../middleware/auth");
  * 
  */
 router.route("/")
-    .get(verify(), customerController.getCustomers)
-    .post(verify(), customerController.createCustomer)
+    .get(verify(), validate(customerValidation.getCustomers), customerController.getCustomers)
+    .post(verify(), validate(customerValidation.createCustomer), customerController.createCustomer)
 
 
 router.route("/:id")
-    .get(verify(), customerController.getCustomer)
-    .delete(verify(), customerController.deleteCustomerByID)
-    .patch(verify(), customerController.updateCustomerByID);
+    .get(verify(), validate(customerValidation.getCustomer), customerController.getCustomer)
+    .delete(verify(), validate(customerValidation.getCustomer), customerController.deleteCustomerByID)
+    .patch(verify(), validate(customerValidation.updateCustomer), customerController.updateCustomerByID);
 
 
 
