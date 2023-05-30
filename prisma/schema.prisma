@@ -42,26 +42,84 @@ model User {
   Reading                 Reading[]
   Dosage                  Dosage[]
   ServiceChecklist        ServiceChecklist[]
+  ServiceLocation         ServiceLocation[]
+  Waterbody               Waterbody[]        @relation("WaterbodytoAdmin")
+  WaterbodyTechnician     Waterbody[]        @relation("WaterbodytoTechnician")
 }
 
 model Customer {
-  customer_id         String   @id @default(uuid())
+  customer_id         String            @id @default(uuid())
   admin_id            String
-  admin               User     @relation(fields: [admin_id], references: [id])
+  admin               User              @relation(fields: [admin_id], references: [id])
   first_name          String
   last_name           String
   city                String
   state               String
   zipcode             String
-  email               String   @unique
+  email               String            @unique
   mobile_no_primary   String
   mobile_no_secondary String?
   company_name        String?
   company_address     String?
   billing_address     String?
   billing_details     String?
-  createdAt           DateTime @default(now()) // * default value (now)
-  updatedAt           DateTime @updatedAt
+  createdAt           DateTime          @default(now()) // * default value (now)
+  updatedAt           DateTime          @updatedAt
+  ServiceLocation     ServiceLocation[]
+  Waterbody           Waterbody[]
+}
+
+model ServiceLocation {
+  service_location_id          String      @id @default(uuid())
+  admin                        User        @relation(fields: [admin_id], references: [id])
+  admin_id                     String
+  customer                     Customer    @relation(fields: [customer_id], references: [customer_id])
+  customer_id                  String
+  name                         String
+  city                         String
+  state                        String
+  email                        String
+  mobile_no                    String
+  address                      String
+  location_code                String
+  gate_code                    String?
+  dog_name                     String?
+  minutes_per_stop             Int
+  sales_tax_group              String?
+  rate                         Int
+  labor_cost                   Int
+  labor_cost_type              String?
+  notes                        String
+  notify_sms                   Boolean
+  notify_email                 Boolean
+  notify_work_completion_sms   Boolean
+  notify_work_completion_email Boolean
+  WaterBody                    Waterbody[]
+  createdAt                    DateTime    @default(now()) // * default value (now)
+  updatedAt                    DateTime    @updatedAt
+}
+
+model Waterbody {
+  waterbody_id        String          @id @default(uuid())
+  admin               User            @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
+  admin_id            String
+  customer            Customer        @relation(fields: [customer_id], references: [customer_id])
+  customer_id         String
+  service_location    ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
+  service_location_id String
+  technician          User            @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
+  latitude            String
+  longitude           String
+  technician_id       String
+  waterbody_type      String
+  name                String
+  assigned_day        String
+  frequency           String
+  media               String[]        @default([])
+  start_date          DateTime
+  end_date            DateTime
+  createdAt           DateTime        @default(now()) // * default value (now)
+  updatedAt           DateTime        @updatedAt
 }
 
 model WorkOrderType {

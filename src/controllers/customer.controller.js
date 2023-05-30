@@ -42,7 +42,7 @@ const deleteCustomerByID = TrackError(async (req, res, next) => {
         res.status(200).send(result)
 
     } catch (e) {
-        if (e.code === "P2025" || error.message.includes("Record to delete does not exist")) {
+        if (e.code === "P2025" || error.message.includes("record to delete does not exist")) {
             return res.status(404).send({ success: false, message: "record does not exists" })
         }
         res.status(400).send({ success: false, message: e })

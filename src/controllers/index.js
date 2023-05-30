@@ -6,3 +6,5 @@ module.exports.readingController = require("./reading.controller");
 module.exports.dosageController = require("./dosageController")
 module.exports.authController = require("./auth.controller");
 module.exports.serviceChecklistController = require("./serviceChecklist.controller");
+module.exports.waterbodyController = require("./waterbody.controller")
+module.exports.serviceLocationController = require("./serviceLocation.controller")
