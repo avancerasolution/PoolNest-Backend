@@ -6,7 +6,7 @@ const createUser = {
         last_name: Joi.string().required(),
         username: Joi.string().required(),
         color_code: Joi.string().regex(/^#[A-Fa-f0-9]{6}/).required(),
-        user_type: Joi.string().valid("Admin", "Techinician", "SuperAdmin").required(),
+        user_type: Joi.string().valid("Admin", "Technician", "SuperAdmin").required(),
         email: Joi.string().email().required(),
         see_other_tech: Joi.boolean().required(),
         manage_admin_panel: Joi.boolean().required(),

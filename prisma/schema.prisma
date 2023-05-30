@@ -45,6 +45,8 @@ model User {
   ServiceLocation         ServiceLocation[]
   Waterbody               Waterbody[]        @relation("WaterbodytoAdmin")
   WaterbodyTechnician     Waterbody[]        @relation("WaterbodytoTechnician")
+  Service                 Service[]          @relation("ServiceToAdmin")
+  ServiceTechnician       Service[]          @relation("ServiceToTechnician")
 }
 
 model Customer {
@@ -67,6 +69,7 @@ model Customer {
   updatedAt           DateTime          @updatedAt
   ServiceLocation     ServiceLocation[]
   Waterbody           Waterbody[]
+  Service             Service[]
 }
 
 model ServiceLocation {
@@ -97,6 +100,7 @@ model ServiceLocation {
   WaterBody                    Waterbody[]
   createdAt                    DateTime    @default(now()) // * default value (now)
   updatedAt                    DateTime    @updatedAt
+  Service                      Service[]
 }
 
 model Waterbody {
@@ -120,6 +124,7 @@ model Waterbody {
   end_date            DateTime
   createdAt           DateTime        @default(now()) // * default value (now)
   updatedAt           DateTime        @updatedAt
+  Service             Service[]
 }
 
 model WorkOrderType {
@@ -171,6 +176,8 @@ model Dosage {
   values                Int[]
   createdAt             DateTime @default(now()) // * default value (now)
   updatedAt             DateTime @updatedAt
+  Service               Service? @relation(fields: [serviceService_id], references: [service_id])
+  serviceService_id     String?
 }
 
 model Reading {
@@ -183,6 +190,8 @@ model Reading {
   values              Int[]
   createdAt           DateTime @default(now()) // * default value (now)
   updatedAt           DateTime @updatedAt
+  Service             Service? @relation(fields: [serviceService_id], references: [service_id])
+  serviceService_id   String?
 }
 
 model ServiceChecklist {
@@ -193,4 +202,31 @@ model ServiceChecklist {
   admin_id                String
   createdAt               DateTime @default(now()) // * default value (now)
   updatedAt               DateTime @updatedAt
+  Service                 Service? @relation(fields: [serviceService_id], references: [service_id])
+  serviceService_id       String?
+}
+
+model Service {
+  service_id          String             @id @default(uuid())
+  admin               User               @relation("ServiceToAdmin", fields: [admin_id], references: [id])
+  admin_id            String
+  technician          User               @relation("ServiceToTechnician", fields: [technician_id], references: [id])
+  technician_id       String
+  waterbody           Waterbody          @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody_id        String
+  service_location    ServiceLocation    @relation(fields: [service_location_id], references: [service_location_id])
+  service_location_id String
+  customer            Customer           @relation(fields: [customer_id], references: [customer_id])
+  customer_id         String
+  assigned_day        String
+  status              String
+  frequency           String
+  start_date          DateTime
+  stop_date           DateTime
+  images              String[]           @default([])
+  readings            Reading[]
+  dosages             Dosage[]
+  checklists          ServiceChecklist[]
+  createdAt           DateTime           @default(now()) // * default value (now)
+  updatedAt           DateTime           @updatedAt
 }

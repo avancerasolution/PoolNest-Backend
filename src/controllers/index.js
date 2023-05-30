@@ -8,3 +8,4 @@ module.exports.authController = require("./auth.controller");
 module.exports.serviceChecklistController = require("./serviceChecklist.controller");
 module.exports.waterbodyController = require("./waterbody.controller")
 module.exports.serviceLocationController = require("./serviceLocation.controller")
+module.exports.serviceController = require("./service.controller")

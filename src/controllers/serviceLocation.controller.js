@@ -10,7 +10,7 @@ const getServiceLocations = TrackError(async (req, res, next) => {
         filters.admin_id = req.user.admin_id;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
-    if (!options.sortBy) { options.sortBy = "work_order_type_id" }
+    if (!options.sortBy) { options.sortBy = "service_location_id" }
     const result = await paginate("serviceLocation", filters, options)
     res.status(200).send({ success: true, result });
 

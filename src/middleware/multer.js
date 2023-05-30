@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png" ||
     file.mimetype === "image/jfif" ||
-    // file.mimetype === "application/octet-stream" ||
+    file.mimetype === 'video/mp4' ||
     file.mimetype === "image/jpg"
   ) {
     cb(null, true);

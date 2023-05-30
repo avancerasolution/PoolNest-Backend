@@ -1,26 +1,26 @@
 const Joi = require("joi");
 
-const createWaterbody = {
+const createService = {
     body: Joi.object().keys({
-        customer_id: Joi.string().required(),
-        service_location_id: Joi.string().required(),
         technician_id: Joi.string().required(),
-        waterbody_type: Joi.string().required(),
-        name: Joi.string().required(),
+        waterbody_id: Joi.string().required(),
+        service_location_id: Joi.string().required(),
+        customer_id: Joi.string().required(),
         assigned_day: Joi.string().required(),
+        status: Joi.string().required(),
         frequency: Joi.string().required(),
         start_date: Joi.date().required(),
-        end_date: Joi.date().required(),
-        longitude: Joi.string().required(),
-        latitude: Joi.string().required()
+        stop_date: Joi.date().required(),
     }),
 };
 
-const getWaterbodies = {
+const getServices = {
     query: Joi.object().keys({
-        name: Joi.string(),
-        color_code: Joi.string(),
-        recurrence: Joi.string(),
+        technician_id: Joi.string(),
+        waterbody_id: Joi.string(),
+        customer_id: Joi.string(),
+        status: Joi.string(),
+        frequency: Joi.string(),
         pageNumber: Joi.number().integer(),
         sortByField: Joi.string(),
         limit: Joi.number().integer(),
@@ -28,28 +28,27 @@ const getWaterbodies = {
     }),
 };
 
-const getWaterbody = {
+const getService = {
     params: Joi.object().keys({
         id: Joi.string().required(),
     }),
 };
 
-const updateWaterbody = {
+const updateService = {
     params: Joi.object().keys({
         id: Joi.string().required(),
     }),
     body: Joi.object().keys({
-        customer_id: Joi.string(),
-        service_location_id: Joi.string(),
         technician_id: Joi.string(),
-        waterbody_Type: Joi.string(),
-        name: Joi.string(),
+        waterbody_id: Joi.string(),
+        service_location_id: Joi.string(),
         assigned_day: Joi.string(),
+        status: Joi.string(),
         frequency: Joi.string(),
         start_date: Joi.date(),
-        end_date: Joi.date(),
+        stop_date: Joi.date(),
     }),
 
 };
 
-module.exports = { createWaterbody, getWaterbodies, getWaterbody, updateWaterbody };
+module.exports = { createService, getServices, getService, updateService };

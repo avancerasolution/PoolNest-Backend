@@ -3,7 +3,8 @@ const router = express.Router();
 const { waterbodyController } = require("../controllers")
 const { verify } = require("../middleware/auth")
 const validate = require("../middleware/validate")
-const waterbodyValidation = require("../validations/waterbody.validation")
+const waterbodyValidation = require("../validations/waterbody.validation");
+const upload = require("../middleware/multer");
 
 
 /**
@@ -19,13 +20,24 @@ const waterbodyValidation = require("../validations/waterbody.validation")
  * 
  */
 router.route("/")
-    .get(verify(), validate(waterbodyValidation.getWaterbodies), waterbodyController.getWaterbodies)
-    .post(verify(), validate(waterbodyValidation.createWaterbody), waterbodyController.createWaterbody)
+    .get(verify(),
+        validate(waterbodyValidation.getWaterbodies),
+        waterbodyController.getWaterbodies)
+    .post(verify(),
+        upload.array("media", 5),
+        validate(waterbodyValidation.createWaterbody),
+        waterbodyController.createWaterbody)
 
 router.route("/:id")
-    .get(verify(), validate(waterbodyValidation.getWaterbody), waterbodyController.getWaterbody)
-    .delete(verify(), validate(waterbodyValidation.getWaterbody), waterbodyController.deleteWaterbodyByID)
-    .patch(verify(), validate(waterbodyValidation.updateWaterbody), waterbodyController.updateWaterbodyByID);
+    .get(verify(),
+        validate(waterbodyValidation.getWaterbody),
+        waterbodyController.getWaterbody)
+    .delete(verify(),
+        validate(waterbodyValidation.getWaterbody),
+        waterbodyController.deleteWaterbodyByID)
+    .patch(verify(),
+        upload.array("media", 5), validate(waterbodyValidation.updateWaterbody),
+        waterbodyController.updateWaterbodyByID);
 
 
 module.exports = router;
