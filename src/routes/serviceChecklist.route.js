@@ -22,6 +22,12 @@ const { verify } = require("../middleware/auth");
 router.route("/")
     .get(verify(), validate(serviceChecklistValidation.getServiceChecklists), serviceChecklistController.getServiceChecklists)
     .post(verify(), validate(serviceChecklistValidation.createServiceChecklist), serviceChecklistController.createServiceChecklist)
+
+router.route("/createMany")
+    .post(verify(), validate(serviceChecklistValidation.createServiceChecklists),serviceChecklistController.createServiceChecklists)
+
+
+
 router.route("/:id")
     .get(verify(), validate(serviceChecklistValidation.getServiceChecklist), serviceChecklistController.getServiceChecklist)
     .delete(verify(), validate(serviceChecklistValidation.getServiceChecklist), serviceChecklistController.deleteAllServiceChecklists)

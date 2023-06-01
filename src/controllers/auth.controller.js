@@ -11,7 +11,6 @@ const login = TrackError(async (req, res, next) => {
     if (!user) {
         return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid email or password" })
     }
-    console.log(user, "<== user")
     console.log(await comparePassword(user.password, password), "<== user")
     if (await comparePassword(user.password, password) === false) {
         return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid email or password" })

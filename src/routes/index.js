@@ -10,6 +10,9 @@ const serviceChecklistRoute = require("./serviceChecklist.route")
 const serviceLocationRoute = require("./serviceLocation.route")
 const waterbodyRoute = require("./waterbody.route")
 const serviceRoute = require("./service.route")
+const workOrderRoute = require("./workOrder.route")
+const equipmentRoute = require("./equipment.route")
+const itemNeededRoute = require("./itemNeeded.route")
 const router = express.Router();
 
 router.use("/user", userRoute)
@@ -23,4 +26,9 @@ router.use("/serviceChecklist", serviceChecklistRoute)
 router.use("/serviceLocation", serviceLocationRoute)
 router.use("/waterbody", waterbodyRoute)
 router.use("/service", serviceRoute)
+router.use("/workOrder", workOrderRoute)
+router.use("/equipment", equipmentRoute)
+router.use("/itemNeeded", itemNeededRoute)
+
+
 module.exports = router;

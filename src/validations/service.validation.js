@@ -2,10 +2,10 @@ const Joi = require("joi");
 
 const createService = {
     body: Joi.object().keys({
+        customer_id: Joi.string().required(),
         technician_id: Joi.string().required(),
         waterbody_id: Joi.string().required(),
         service_location_id: Joi.string().required(),
-        customer_id: Joi.string().required(),
         assigned_day: Joi.string().required(),
         status: Joi.string().required(),
         frequency: Joi.string().required(),

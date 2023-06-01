@@ -19,7 +19,7 @@ const getWaterbodies = TrackError(async (req, res, next) => {
 
 const getWaterbody = TrackError(async (req, res, next) => {
     const id = req.params.id;
-    const result = await prismaClient.waterbody.findFirst({ where: { waterbody_id: id } });
+    const result = await prismaClient.waterbody.findFirst({ where: { waterbody_id: id }, include: { Service: true, service_location: true, Equipment: true, customer: true, technician: true, WorkOrder: true, ServiceChecklist: true } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Waterboody doesnt not exists" });
     }

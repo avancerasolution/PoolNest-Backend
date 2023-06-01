@@ -9,3 +9,6 @@ module.exports.serviceChecklistController = require("./serviceChecklist.controll
 module.exports.waterbodyController = require("./waterbody.controller")
 module.exports.serviceLocationController = require("./serviceLocation.controller")
 module.exports.serviceController = require("./service.controller")
+module.exports.workOrderController = require("./workOrder.controller")
+module.exports.equipmentController = require("./equipment.controller")
+module.exports.itemNeededController = require("./itemNeeded.controller")

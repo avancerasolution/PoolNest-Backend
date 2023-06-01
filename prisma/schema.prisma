@@ -47,12 +47,17 @@ model User {
   WaterbodyTechnician     Waterbody[]        @relation("WaterbodytoTechnician")
   Service                 Service[]          @relation("ServiceToAdmin")
   ServiceTechnician       Service[]          @relation("ServiceToTechnician")
+  WorkOrderTechnician     WorkOrder[]        @relation("WorkOrderToTechnician")
+  WorkOrderAdmin          WorkOrder[]        @relation("WorkOrderToAdmin")
+  Equipment               Equipment[]
+  ItemNeeded              ItemNeeded[]
 }
 
 model Customer {
   customer_id         String            @id @default(uuid())
   admin_id            String
   admin               User              @relation(fields: [admin_id], references: [id])
+  customer_type       String
   first_name          String
   last_name           String
   city                String
@@ -70,6 +75,7 @@ model Customer {
   ServiceLocation     ServiceLocation[]
   Waterbody           Waterbody[]
   Service             Service[]
+  WorkOrder           WorkOrder[]
 }
 
 model ServiceLocation {
@@ -101,17 +107,18 @@ model ServiceLocation {
   createdAt                    DateTime    @default(now()) // * default value (now)
   updatedAt                    DateTime    @updatedAt
   Service                      Service[]
+  WorkOrder                    WorkOrder[]
 }
 
 model Waterbody {
-  waterbody_id        String          @id @default(uuid())
-  admin               User            @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
+  waterbody_id        String             @id @default(uuid())
+  admin               User               @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  customer            Customer        @relation(fields: [customer_id], references: [customer_id])
+  customer            Customer           @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
-  service_location    ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
+  service_location    ServiceLocation    @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  technician          User            @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
+  technician          User               @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
   latitude            String
   longitude           String
   technician_id       String
@@ -119,12 +126,16 @@ model Waterbody {
   name                String
   assigned_day        String
   frequency           String
-  media               String[]        @default([])
+  media               String[]           @default([])
   start_date          DateTime
   end_date            DateTime
-  createdAt           DateTime        @default(now()) // * default value (now)
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime           @default(now()) // * default value (now)
+  updatedAt           DateTime           @updatedAt
   Service             Service[]
+  WorkOrder           WorkOrder[]
+  Equipment           Equipment[]
+  ItemNeeded          ItemNeeded[]
+  ServiceChecklist    ServiceChecklist[]
 }
 
 model WorkOrderType {
@@ -148,6 +159,30 @@ model WorkOrderType {
   ShoppingItem           ShoppingItem[]
   createdAt              DateTime       @default(now()) // * default value (now)
   updatedAt              DateTime       @updatedAt
+  WorkOrder              WorkOrder[]
+}
+
+model WorkOrder {
+  work_order_id          String          @id @default(uuid())
+  admin                  User            @relation("WorkOrderToAdmin", fields: [admin_id], references: [id])
+  admin_id               String
+  technician             User            @relation("WorkOrderToTechnician", fields: [technician_id], references: [id])
+  technician_id          String
+  waterbody              Waterbody       @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody_id           String
+  service_location       ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
+  service_location_id    String
+  work_order_type        WorkOrderType   @relation(fields: [work_order_type_id], references: [work_order_type_id])
+  work_order_type_id     String
+  customer               Customer        @relation(fields: [customer_id], references: [customer_id])
+  customer_id            String
+  status                 String
+  description            String
+  service_date           DateTime
+  estimated_time_minutes Int
+  labor_cost             Int
+  price                  Int
+  labor_cost_paid        Boolean?        @default(false)
 }
 
 model ShoppingItem {
@@ -167,6 +202,8 @@ model Dosage {
   dosage_id             String   @id @default(uuid())
   admin_id              String
   admin                 User     @relation(fields: [admin_id], references: [id])
+  Service               Service? @relation(fields: [service_id], references: [service_id])
+  service_id            String?
   name                  String
   description           String
   unit_of_measurement   String
@@ -176,8 +213,6 @@ model Dosage {
   values                Int[]
   createdAt             DateTime @default(now()) // * default value (now)
   updatedAt             DateTime @updatedAt
-  Service               Service? @relation(fields: [serviceService_id], references: [service_id])
-  serviceService_id     String?
 }
 
 model Reading {
@@ -190,43 +225,59 @@ model Reading {
   values              Int[]
   createdAt           DateTime @default(now()) // * default value (now)
   updatedAt           DateTime @updatedAt
-  Service             Service? @relation(fields: [serviceService_id], references: [service_id])
-  serviceService_id   String?
 }
 
 model ServiceChecklist {
-  service_checklist_id    String   @id @default(uuid())
+  service_checklist_id    String    @id @default(uuid())
+  admin                   User      @relation(fields: [admin_id], references: [id])
+  admin_id                String
   description             String
   description_on_complete String
-  admin                   User     @relation(fields: [admin_id], references: [id])
-  admin_id                String
-  createdAt               DateTime @default(now()) // * default value (now)
-  updatedAt               DateTime @updatedAt
-  Service                 Service? @relation(fields: [serviceService_id], references: [service_id])
-  serviceService_id       String?
+  createdAt               DateTime  @default(now()) // * default value (now)
+  updatedAt               DateTime  @updatedAt
+  Waterbody               Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody_id            String
 }
 
 model Service {
-  service_id          String             @id @default(uuid())
-  admin               User               @relation("ServiceToAdmin", fields: [admin_id], references: [id])
+  service_id          String          @id @default(uuid())
+  admin               User            @relation("ServiceToAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  technician          User               @relation("ServiceToTechnician", fields: [technician_id], references: [id])
+  technician          User            @relation("ServiceToTechnician", fields: [technician_id], references: [id])
   technician_id       String
-  waterbody           Waterbody          @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody           Waterbody       @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id        String
-  service_location    ServiceLocation    @relation(fields: [service_location_id], references: [service_location_id])
+  service_location    ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  customer            Customer           @relation(fields: [customer_id], references: [customer_id])
+  customer            Customer        @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
   assigned_day        String
   status              String
   frequency           String
   start_date          DateTime
   stop_date           DateTime
-  images              String[]           @default([])
-  readings            Reading[]
+  images              String[]        @default([])
   dosages             Dosage[]
-  checklists          ServiceChecklist[]
-  createdAt           DateTime           @default(now()) // * default value (now)
-  updatedAt           DateTime           @updatedAt
+  createdAt           DateTime        @default(now()) // * default value (now)
+  updatedAt           DateTime        @updatedAt
+}
+
+model Equipment {
+  equipment_id String    @id @default(uuid())
+  admin_id     String
+  admin        User      @relation(fields: [admin_id], references: [id])
+  Waterbody    Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody_id String
+  name         String
+  quantity     Int
+}
+
+model ItemNeeded {
+  item_needed_id String    @id @default(uuid())
+  admin          User      @relation(fields: [admin_id], references: [id])
+  Waterbody      Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody_id   String
+  admin_id       String
+  name           String
+  quantity       Int
 }

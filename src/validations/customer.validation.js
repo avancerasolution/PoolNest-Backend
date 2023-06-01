@@ -10,6 +10,7 @@ const createCustomer = {
         email: Joi.string().email().required(),
         mobile_no_primary: Joi.string().required(),
         mobile_no_secondary: Joi.string(),
+        customer_type: Joi.string().required(),
         company_name: Joi.string(),
         company_address: Joi.string(),
         billing_address: Joi.string(),
@@ -51,6 +52,7 @@ const updateCustomer = {
         company_address: Joi.string(),
         billing_address: Joi.string(),
         billing_details: Joi.string(),
+        customer_type: Joi.string()
     }),
 
 };

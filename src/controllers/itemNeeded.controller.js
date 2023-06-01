@@ -4,47 +4,48 @@ const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
 
 
-const getServiceChecklists = TrackError(async (req, res, next) => {
+const getItemsNeeded = TrackError(async (req, res, next) => {
     const filters = pick(req.query, ["name", "description"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
-    if (!options.sortBy) { options.sortBy = "service_checklist_id" }
-    const result = await paginate("serviceChecklist", filters, options)
+    if (!options.sortBy) { options.sortBy = "item_needed_id" }
+    const result = await paginate("itemNeeded", filters, options)
     res.status(200).send({ success: true, result });
 
 })
 
-const getServiceChecklist = TrackError(async (req, res, next) => {
+const getItemNeeded = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.serviceChecklist.findFirst({ where: { service_checklist_id: id } });
+    const result = await prismaClient.itemNeeded.findFirst({ where: { item_needed_id: id } });
     if (!result) {
-        return res.status(404).send({ success: false, message: "checklist item doesnt not exists" });
+        return res.status(404).send({ success: false, message: "ItemsNeeded doesnt not exists" });
     }
     res.status(200).send({ success: true, result })
 })
 
 
-const createServiceChecklist = TrackError(async (req, res, next) => {
+const createItemNeeded = TrackError(async (req, res, next) => {
     req.body.admin_id = req.user.admin_id;
-    const result = await prismaClient.serviceChecklist.create({ data: req.body, })
+    const result = await prismaClient.itemNeeded.create({ data: req.body, })
     res.status(201).send({ success: true, result })
 })
 
-const createServiceChecklists = TrackError(async (req, res, next) => {
+
+const createItemsNeeded = TrackError(async (req, res, next) => {
     let body = req.body.map((item) => {
         return { ...item, admin_id: req.user.admin_id }
     })
-    const result = await prismaClient.serviceChecklist.createMany({ data: body })
+    const result = await prismaClient.itemNeeded.createMany({ data: body })
     res.status(201).send({ success: true, result })
 })
 
 
-const deleteServiceChecklistByID = TrackError(async (req, res, next) => {
+const deleteItemsNeededByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id
-        const result = await prismaClient.serviceChecklist.delete({ where: { service_checklist_id: id } })
+        const result = await prismaClient.itemNeeded.delete({ where: { item_needed_id: id } })
         res.status(200).send(result)
 
     } catch (e) {
@@ -56,28 +57,26 @@ const deleteServiceChecklistByID = TrackError(async (req, res, next) => {
 
 })
 
-const deleteAllServiceChecklists = TrackError(async (req, res, next) => {
+const deleteAllItemsNeeded = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.serviceChecklist.deleteMany()
+    const result = await prismaClient.itemNeeded.deleteMany()
     res.status(200).send(result)
 })
 
 
-const updateServiceChecklistByID = TrackError(async (req, res, next) => {
+
+const updateItemNeededByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id
-        const result = await prismaClient.serviceChecklist.update({ where: { service_checklist_id: id }, data: req.body })
+        const result = await prismaClient.itemNeeded.update({ where: { item_needed_id: id }, data: req.body })
         res.status(200).send(result)
 
     } catch (e) {
-        if (e.code === "P2025" || e.message.includes("record to update does not exist")) {
+        if (e.code === "P2025" || e.message.includes("Record to update does not exist")) {
             return res.status(404).send({ success: false, message: "record  not exists" })
         }
         res.status(400).send({ success: false, message: e.message })
     }
 })
 
-
-
-
-module.exports = { getServiceChecklists, createServiceChecklist, deleteServiceChecklistByID, getServiceChecklist, updateServiceChecklistByID, deleteAllServiceChecklists, createServiceChecklists }
+module.exports = { getItemNeeded, createItemNeeded, deleteItemsNeededByID, getItemsNeeded, updateItemNeededByID, deleteAllItemsNeeded, createItemsNeeded }

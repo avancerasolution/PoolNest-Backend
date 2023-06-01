@@ -5,7 +5,7 @@ const routes = require("./src/routes")
 const helmet = require("helmet");
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
-
+const path = require("path");
 
 const swaggerOptions = {
     definition: {
@@ -39,11 +39,11 @@ app.get('/swagger.json', (req, res) => {
 // Serve Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", routes)
+app.use("/assets", express.static(path.join(__dirname, path.join("src/uploads"))));
 
 app.use((req, res, next) => {
     res.status(404).send("NOT FOUND")
 });
-
 
 const port = process.env.PORT || 6000;
 

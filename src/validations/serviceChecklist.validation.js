@@ -4,9 +4,19 @@ const createServiceChecklist = {
     body: Joi.object().keys({
         description: Joi.string().required(),
         description_on_complete: Joi.string().required(),
-
+        waterbody_id: Joi.string().required()
     }),
 };
+
+const createServiceChecklists = {
+    body: Joi.array().items(Joi.object().keys({
+        description: Joi.string().required(),
+        description_on_complete: Joi.string().required(),
+        waterbody_id: Joi.string().required()
+    }))
+};
+
+
 
 const getServiceChecklists = {
     query: Joi.object().keys({
@@ -35,4 +45,4 @@ const updateServiceChecklist = {
 
 };
 
-module.exports = { createServiceChecklist, getServiceChecklists, getServiceChecklist, updateServiceChecklist };
+module.exports = { createServiceChecklist, getServiceChecklists, getServiceChecklist, updateServiceChecklist, createServiceChecklists };
