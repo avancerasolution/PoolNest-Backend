@@ -13,6 +13,7 @@ const serviceRoute = require("./service.route")
 const workOrderRoute = require("./workOrder.route")
 const equipmentRoute = require("./equipment.route")
 const itemNeededRoute = require("./itemNeeded.route")
+const activeServiceRoute = require("./activeService.route")
 const router = express.Router();
 
 router.use("/user", userRoute)
@@ -29,6 +30,7 @@ router.use("/service", serviceRoute)
 router.use("/workOrder", workOrderRoute)
 router.use("/equipment", equipmentRoute)
 router.use("/itemNeeded", itemNeededRoute)
+router.use("/activeService", activeServiceRoute)
 
 
 module.exports = router;

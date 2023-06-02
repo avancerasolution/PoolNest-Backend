@@ -7,6 +7,7 @@ const createCustomer = {
         city: Joi.string().required(),
         state: Joi.string().required(),
         zipcode: Joi.string().required(),
+        status: Joi.string().required(),
         email: Joi.string().email().required(),
         mobile_no_primary: Joi.string().required(),
         mobile_no_secondary: Joi.string(),
@@ -20,7 +21,12 @@ const createCustomer = {
 
 const getCustomers = {
     query: Joi.object().keys({
-        name: Joi.string(),
+        first_name: Joi.string(),
+        last_name: Joi.string(),
+        city: Joi.string(),
+        email: Joi.string(),
+        status: Joi.string(),
+        customer_type: Joi.string(),
         description: Joi.string(),
         pageNumber: Joi.number().integer(),
         sortByField: Joi.string(),

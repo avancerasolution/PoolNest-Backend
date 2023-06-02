@@ -6,7 +6,7 @@ const prismaClient = require("../utils/prisma.client")
 
 
 const getCustomers = TrackError(async (req, res, next) => {
-    const filters = pick(req.query, ["email", "name",])
+    const filters = pick(req.query, ["email", "name", "status", "customer_type", "company_name", "mobile_no_primary"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
@@ -18,7 +18,7 @@ const getCustomers = TrackError(async (req, res, next) => {
 })
 const getCustomer = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.customer.findFirst({ where: { customer_id: id } });
+    const result = await prismaClient.customer.findFirst({ where: { customer_id: id }, include: { ServiceLocation: true, Waterbody: true, } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Customer doesnt not exists" });
     }

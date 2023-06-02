@@ -5,7 +5,7 @@ const prismaClient = require("../utils/prisma.client")
 
 
 const getServiceLocations = TrackError(async (req, res, next) => {
-    const filters = pick(req.query, ["color_code", "name",])
+    const filters = pick(req.query, ["color_code", "name", "city", "customer_id"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
@@ -69,4 +69,11 @@ const updateServiceLocationByID = TrackError(async (req, res, next) => {
 })
 
 
-module.exports = { getServiceLocations, createServiceLocation, deleteServiceLocationByID, getServiceLocation, updateServiceLocationByID, deleteAllServiceLocations }
+module.exports = {
+    getServiceLocations,
+    createServiceLocation,
+    deleteServiceLocationByID,
+    getServiceLocation,
+    updateServiceLocationByID,
+    deleteAllServiceLocations
+}

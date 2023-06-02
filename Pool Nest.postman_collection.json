@@ -1,0 +1,2513 @@
+{
+	"info": {
+		"_postman_id": "897a4d3e-2183-486a-a4a6-806525def9b6",
+		"name": "Pool Nest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14684791"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "get Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/user",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "a@sa2.com",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"t@sa.com\",\r\n    \"first_name\": \"first name\",\r\n    \"last_name\": \"last_name\",\r\n    \"username\": \"t\",\r\n    \"user_type\": \"Technician\",\r\n    \"password\": \"abc123!@#\",\r\n    \"color_code\": \"#000000\",\r\n    \"is_active\": true,\r\n    \"see_other_tech\": true,\r\n    \"manage_admin_panel\": true,\r\n    \"manage_general_settings\": true,\r\n    \"manage_route_stops\": true,\r\n    \"rearrange_routes\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/user",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "StartFragment\n\n{    \"email\": \"email1@email.com\",    \"first_name\": \"first name\",    \"last_name\": \"last_name\",    \"username\": \"user1\",    \"user_type\": \"super_admin\",    \"password\": \"abc123!@#\",    \"color_code\": \"#000000\",    \"isSuperAdmin\": true,    \"see_other_tech\": true,    \"manage_admin_panel\": true,    \"manage_general_settings\": true,    \"manage_route_stops\": true,    \"rearrange_routes\": true}\n\nEndFragment\n\n  \n  \n\nthese are all thje fields available in the model which can be sent to the API"
+					},
+					"response": []
+				},
+				{
+					"name": "get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/user/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3ef0e038-e0e4-4327-a896-2f9f02fcfdfd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/user/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Swagger docs",
+			"item": [
+				{
+					"name": "get docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api-docs",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Query Customers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/customer",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"customer"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": "first name",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "cus5@cus.com",
+									"disabled": true
+								},
+								{
+									"key": "customer_type",
+									"value": "residential",
+									"disabled": true
+								},
+								{
+									"key": "pageNumber",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"first name\",\r\n    \"last_name\": \"last_name\",\r\n    \"city\": \"city name\",\r\n    \"state\": \"some state\",\r\n    \"zipcode\": \"73500\",\r\n    \"email\": \"cus5@cus.com\",\r\n    \"customer_type\": \"business\",\r\n    \"mobile_no_primary\": \"0900786201\",\r\n    \"mobile_no_secondary\": \"NA\",\r\n    \"company_name\": \"name\",\r\n    \"company_address\": \"this is company address || can ne null\",\r\n    \"billing_address\": \"billing addres\",\r\n    \"billing_details\": \"billing details\",\r\n    \"status\":\"disabled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/customer",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/customer/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "49581f6e-ccc7-484c-838b-3de302dc0acc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/customer/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"customer3_email1@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/customer/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "d0597a6f-bffb-43b4-b904-29cf7b6839cf"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Work Order Type",
+			"item": [
+				{
+					"name": "Get Work Order Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrderType",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrderType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Work Order Type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \" my name\",\r\n    \"color_code\": \"#ffffff\",\r\n    \"recurrence\": \"two times\",\r\n    \"labor_cost\": 20.99,\r\n    \"estimated_time_in_mins\": 45,\r\n    \"default_email_subject\": \"this is default sibject when sending email\",\r\n    \"default_email_message\": \"this is default message when sending message\",\r\n    \"check_list\": \"STRINGIFY OBJECT OF CHECKLIST\",\r\n    \"needs_invoiced\": true,\r\n    \"alert_office\": true,\r\n    \"photo_required\": true,\r\n    \"email_to_customer\": true,\r\n    \"allow_tech\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/workOrderType",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrderType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Work Order Type By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrderType/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrderType",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Work Order Type By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrderType/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrderType",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Work Order Type By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"color_code\":\"#000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/workOrderType/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrderType",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shopping Item",
+			"item": [
+				{
+					"name": "Get Shopping Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/shoppingItem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"shoppingItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Shopping Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_image",
+									"type": "file",
+									"src": "/C:/Users/Noman/Desktop/ss/1.PNG"
+								},
+								{
+									"key": "product_image",
+									"type": "file",
+									"src": "/C:/Users/Noman/Desktop/ss/2.1.PNG"
+								},
+								{
+									"key": "product_image",
+									"type": "file",
+									"src": "/C:/Users/Noman/Desktop/ss/3.PNG"
+								},
+								{
+									"key": "description",
+									"value": "this is some description",
+									"type": "text"
+								},
+								{
+									"key": "purchased",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "item_type",
+									"value": "part",
+									"type": "text"
+								},
+								{
+									"key": "assigned_to",
+									"value": "client",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/shoppingItem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"shoppingItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Shopping Item By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/shoppingItem/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"shoppingItem",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shopping List By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "purchased",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/shoppingItem/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"shoppingItem",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Shopping Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/shoppingItem/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"shoppingItem",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dosage",
+			"item": [
+				{
+					"name": "Get Dosages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/dosage",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"dosage"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "dos1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Dosages",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dos2\",\r\n    \"description\": \"some description\",\r\n    \"unit_of_measurement\": \"km\",\r\n    \"cost_per_unit\": 90,\r\n    \"include_service_price\": true,\r\n    \"price_per_unit\": 10,\r\n    \"values\": [\r\n        99,\r\n        100,\r\n        88\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/dosage",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"dosage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dosage By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/dosage/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"dosage",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5fb7cf4f-aac5-4ae9-9f39-f62e8a4ec5a6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Dosage By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/dosage/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"dosage",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Dosage By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"wow\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/dosage/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"dosage",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reading",
+			"item": [
+				{
+					"name": "Get Readings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/reading",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"reading"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "read2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Reading",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"read1\",\r\n    \"description\": \"des1\",\r\n    \"unit_of_measurement\": \"litre\",\r\n    \"values\": [\r\n        1,\r\n        2,\r\n        3,\r\n        4,\r\n        5\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/reading",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"reading"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reading By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/reading/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"reading",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62b79a27-7c5b-4c9c-96d3-029f7a0c801a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reading By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/reading/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"reading",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Request By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"new name\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/reading/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"reading",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sa@sa.com\",\r\n    \"password\": \"abc123!@#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/auth/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Checklist",
+			"item": [
+				{
+					"name": "Get Service Checklists",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service Checklist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"some desscription to checklist\",\r\n    \"description_on_complete\": \"description on complete\",\r\n    \"waterbody_id\":\"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service Checklist By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b1676311-74f8-407c-ba81-13a06f6173ff"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service Checklist By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b1676311-74f8-407c-ba81-13a06f6173ff"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service Checklist By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"it got changed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "63970b26-d35b-4112-a97b-113028386427"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Many Service Checklist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"description\": \"some desscription to checklist 1\",\r\n        \"description_on_complete\": \"description on complete 1\",\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n    },\r\n    {\r\n        \"description\": \"some desscription to checklist 2\",\r\n        \"description_on_complete\": \"description on complete 2\",\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/serviceChecklist/createMany",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceChecklist",
+								"createMany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Location",
+			"item": [
+				{
+					"name": "Get Service Location",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceLocation",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceLocation"
+							],
+							"query": [
+								{
+									"key": "customer_id",
+									"value": "49581f6e-ccc7-484c-838b-3de302dc0acc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service Location",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer_id\": \"49581f6e-ccc7-484c-838b-3de302dc0acc\",\r\n    \"name\": \"service location name\",\r\n    \"city\": \"some city\",\r\n    \"state\": \"some state\",\r\n    \"email\": \"service_location_email@email.com\",\r\n    \"mobile_no\": \"090078601\",\r\n    \"address\": \"address to service Location\",\r\n    \"location_code\": \"some cordinates separated by comma\",\r\n    \"gate_code\": \"some_code for the if exists\",\r\n    \"dog_name\": \"some dog name\",\r\n    \"minutes_per_stop\": 100,\r\n    \"sales_tax_group\": \"soem sales group tax\",\r\n    \"rate\": 99,\r\n    \"labor_cost\": 15,\r\n    \"labor_cost_type\": \"mazdoori\",\r\n    \"notes\": \"these are notes\",\r\n    \"notify_sms\": false,\r\n    \"notify_email\": true,\r\n    \"notify_work_completion_sms\": true,\r\n    \"notify_work_completion_email\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/serviceLocation",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Service Location By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceLocation/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceLocation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "840c7adc-bea2-4ceb-a4e3-a3b25b706c4c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service Location By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/serviceLocation/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceLocation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "840c7adc-bea2-4ceb-a4e3-a3b25b706c4c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update service location BY ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rate\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/serviceLocation/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"serviceLocation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2f6ef2cc-755c-47bd-a358-650adcb71197"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WaterBody",
+			"item": [
+				{
+					"name": "Get waterbodies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/waterbody",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"waterbody"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Waterbody",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "media",
+									"type": "file",
+									"src": "/C:/Users/Noman/Desktop/ss/reports.png"
+								},
+								{
+									"key": "media",
+									"type": "file",
+									"src": "/C:/Users/Noman/Desktop/ss/cmd.PNG"
+								},
+								{
+									"key": "customer_id",
+									"value": "8582b113-3633-470d-9e11-bd4a1baf719f",
+									"type": "text"
+								},
+								{
+									"key": "service_location_id",
+									"value": "70ace16a-6084-4082-abf0-ec9dbe748643",
+									"type": "text"
+								},
+								{
+									"key": "technician_id",
+									"value": "acd26344-8e15-436b-951f-ab5931a838fd",
+									"type": "text"
+								},
+								{
+									"key": "waterbody_type",
+									"value": "kids pool",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "kids pool1",
+									"type": "text"
+								},
+								{
+									"key": "assigned_day",
+									"value": "Monday",
+									"type": "text"
+								},
+								{
+									"key": "frequency",
+									"value": "once a month",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "01-07-2023",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "01-12-2023",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "783.12232",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "14.0077",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/waterbody",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"waterbody"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Waterbody By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/waterbody/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"waterbody",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4970fb06-d1c6-4f37-8970-4ce82bf893ff"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Waterbody By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "new name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/waterbody/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"waterbody",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "57354b6a-204c-4afb-978c-97d4f4218f3f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "Get Services",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/service",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"technician_id\": \"acd26344-8e15-436b-951f-ab5931a838fd\",\r\n    \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n    \"service_location_id\": \"70ace16a-6084-4082-abf0-ec9dbe748643\",\r\n    \"customer_id\": \"49581f6e-ccc7-484c-838b-3de302dc0acc\",\r\n    \"assigned_day\": \"Saturday\",\r\n    \"status\": \"active\",\r\n    \"frequency\": \"twice a month\",\r\n    \"start_date\": \"01-08-2023\",\r\n    \"stop_date\": \"12-08-2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/service",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/service/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"service",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68bb5fa7-ca70-42ed-894d-5605e0821db9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/service/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"service",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68bb5fa7-ca70-42ed-894d-5605e0821db9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"frequency\":\"every fucking day\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/service/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"service",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "344da6aa-f4ee-4625-8e8a-6ac497eff1d0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assets",
+			"item": [
+				{
+					"name": "get Asset",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/assets/fb28a629-7ddb-4032-bbb4-9ca391c60b18.PNG",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"assets",
+								"fb28a629-7ddb-4032-bbb4-9ca391c60b18.PNG"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Work Order",
+			"item": [
+				{
+					"name": "Get Work Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrder",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Work Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer_id\": \"8582b113-3633-470d-9e11-bd4a1baf719f\",\r\n    \"technician_id\": \"acd26344-8e15-436b-951f-ab5931a838fd\",\r\n    \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n    \"service_location_id\": \"70ace16a-6084-4082-abf0-ec9dbe748643\",\r\n    \"work_order_type_id\": \"cb0595bb-da66-4195-8292-9562582d05af\",\r\n    \"status\": \"active\",\r\n    \"description\": \"this is description\",\r\n    \"service_date\": \"01-01-2023\",\r\n    \"estimated_time_minutes\": 90,\r\n    \"labor_cost\": 45,\r\n    \"price\": 90\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/workOrder",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get work Order By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrder/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrder",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ec920360-e93d-4ce4-8961-1bca91ce1337"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Work Order By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workOrder/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrder",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ec920360-e93d-4ce4-8961-1bca91ce1337"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Work Order By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"status\": \"deactivated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/workOrder/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workOrder",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4826028f-c563-4620-850c-ca542ceb0fad"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Equipment",
+			"item": [
+				{
+					"name": "Get Equipments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/equipment",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Equipment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n    \"name\": \"hydrolic pump\",\r\n    \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/equipment",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Multiple Equipment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n        \"name\": \"pipe 2x2\",\r\n        \"quantity\": 10\r\n    },\r\n    {\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n        \"name\": \"gyroscope\",\r\n        \"quantity\": 1\r\n    },\r\n    {\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\",\r\n        \"name\": \"planter\",\r\n        \"quantity\": 9\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/equipment/createMany",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment",
+								"createMany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Equipment By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/equipment/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "575c5aaa-124f-4d97-90b7-9a2e4c0749ed"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Equipment By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/equipment/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "575c5aaa-124f-4d97-90b7-9a2e4c0749ed"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Equipment By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\":\"8\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/equipment/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"equipment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "575c5aaa-124f-4d97-90b7-9a2e4c0749ed"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items Needed",
+			"item": [
+				{
+					"name": "get Items Needed",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Sulphur",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Item Needed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sulphur\",\r\n    \"quantity\": 100,\r\n    \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Many Items Needed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"machine gun\",\r\n        \"quantity\": 5,\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n    },\r\n    {\r\n        \"name\": \"pakoray\",\r\n        \"quantity\": 1,\r\n        \"waterbody_id\": \"4970fb06-d1c6-4f37-8970-4ce82bf893ff\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded/createMany",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded",
+								"createMany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Item Needed by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2e7a937d-1be4-4380-9988-431f3487adf4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Item Needed By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4d5d0bf3-90b5-4fa9-ac2f-35ec2a810389"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Item Needed By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 22\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/itemNeeded/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"itemNeeded",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "883fb97b-54db-4ab7-9b5a-e1a3eea9762f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Active Services",
+			"item": [
+				{
+					"name": "Get Active Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/activeService",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"activeService"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWU0OWJiOC1iYmRiLTQwMzYtYWRhNy1mZWIxYjE5N2RjZTEiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTY4NTcwODg1NSwiZXhwIjoxNjg1NzE0MjU1LCJ0eXBlIjoiYWNjZXNzIn0.PRtXZYcVAHGJbjsgyxxncwmndaB6GroHx7Su0ACrqY4",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmZmFiYzAwNC1iYTUwLTRlMDgtYjkwOC1kMzE5OTIzNWQ4MDIiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTY4NTYwMjY5OCwiZXhwIjoxNjg1NjA4MDk4LCJ0eXBlIjoiYWNjZXNzIn0.hVWaj3Aa42EobIzrbazfhU6ri0dHpCXkMI_5C4FkLZk",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+    "prettier.printWidth": 40,
+    "prettier.proseWrap": "always",
+    "prettier.quoteProps": "consistent",
+    "prettier.singleAttributePerLine": true,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "all",
+    "diffEditor.wordWrap": "on",
+    "editor.formatOnSave": true
+}

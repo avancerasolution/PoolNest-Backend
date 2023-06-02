@@ -31,6 +31,7 @@ const getWaterbodies = {
         name: Joi.string(),
         color_code: Joi.string(),
         recurrence: Joi.string(),
+        customer_id: Joi.string(),
         pageNumber: Joi.number().integer(),
         sortByField: Joi.string(),
         limit: Joi.number().integer(),

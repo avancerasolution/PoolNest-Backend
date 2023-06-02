@@ -17,6 +17,13 @@ enum Role {
   Technician
 }
 
+enum FrequencyForService {
+  WEEKLY
+  EVERY_TWO_WEEKS
+  EVERY_THREE_WEEKS
+  EVERY_FOUR_WEEKS
+}
+
 model User {
   id                      String             @id @default(uuid())
   email                   String             @unique
@@ -51,6 +58,8 @@ model User {
   WorkOrderAdmin          WorkOrder[]        @relation("WorkOrderToAdmin")
   Equipment               Equipment[]
   ItemNeeded              ItemNeeded[]
+  ActiveServiceTechnician ActiveService[]    @relation("TechnicianToActiveService")
+  ActiveServiceAdmin      ActiveService[]    @relation("AdminToActiveService")
 }
 
 model Customer {
@@ -64,6 +73,7 @@ model Customer {
   state               String
   zipcode             String
   email               String            @unique
+  status              String?
   mobile_no_primary   String
   mobile_no_secondary String?
   company_name        String?
@@ -199,11 +209,9 @@ model ShoppingItem {
 }
 
 model Dosage {
-  dosage_id             String   @id @default(uuid())
+  dosage_id             String        @id @default(uuid())
   admin_id              String
-  admin                 User     @relation(fields: [admin_id], references: [id])
-  Service               Service? @relation(fields: [service_id], references: [service_id])
-  service_id            String?
+  admin                 User          @relation(fields: [admin_id], references: [id])
   name                  String
   description           String
   unit_of_measurement   String
@@ -211,20 +219,24 @@ model Dosage {
   include_service_price Boolean
   price_per_unit        Int
   values                Int[]
-  createdAt             DateTime @default(now()) // * default value (now)
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime      @default(now()) // * default value (now)
+  updatedAt             DateTime      @updatedAt
+  ActiveService         ActiveService @relation(fields: [active_service_id], references: [active_service_id])
+  active_service_id     String
 }
 
 model Reading {
-  reading_id          String   @id @default(uuid())
+  reading_id          String        @id @default(uuid())
   admin_id            String
-  admin               User     @relation(fields: [admin_id], references: [id])
+  admin               User          @relation(fields: [admin_id], references: [id])
   name                String
   description         String
   unit_of_measurement String
   values              Int[]
-  createdAt           DateTime @default(now()) // * default value (now)
-  updatedAt           DateTime @updatedAt
+  createdAt           DateTime      @default(now()) // * default value (now)
+  updatedAt           DateTime      @updatedAt
+  ActiveService       ActiveService @relation(fields: [active_service_id], references: [active_service_id])
+  active_service_id   String
 }
 
 model ServiceChecklist {
@@ -257,9 +269,9 @@ model Service {
   start_date          DateTime
   stop_date           DateTime
   images              String[]        @default([])
-  dosages             Dosage[]
   createdAt           DateTime        @default(now()) // * default value (now)
   updatedAt           DateTime        @updatedAt
+  ActiveService       ActiveService[]
 }
 
 model Equipment {
@@ -270,6 +282,8 @@ model Equipment {
   waterbody_id String
   name         String
   quantity     Int
+  createdAt    DateTime  @default(now()) // * default value (now)
+  updatedAt    DateTime  @updatedAt
 }
 
 model ItemNeeded {
@@ -280,4 +294,27 @@ model ItemNeeded {
   admin_id       String
   name           String
   quantity       Int
+  createdAt      DateTime  @default(now()) // * default value (now)
+  updatedAt      DateTime  @updatedAt
+}
+
+model ActiveService {
+  active_service_id String    @id @default(uuid())
+  admin             User      @relation("AdminToActiveService", fields: [admin_id], references: [id])
+  admin_id          String
+  service           Service   @relation(fields: [service_id], references: [service_id])
+  service_id        String
+  status            String?   @default("incomplete")
+  technician        User      @relation("TechnicianToActiveService", fields: [technician_id], references: [id])
+  technician_id     String
+  cost              Int?
+  price             Int?
+  total             Int?
+  payment_method    String?
+  payment_status    String?
+  dosages           Dosage[]
+  readings          Reading[]
+  media             String[]  @default([])
+  createdAt         DateTime  @default(now()) // * default value (now)
+  updatedAt         DateTime  @updatedAt
 }
