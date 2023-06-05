@@ -10,7 +10,7 @@ const getActiveServices = TrackError(async (req, res, next) => {
         filters.admin_id = req.user.admin_id;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
-    if (!options.sortBy) { options.sortBy = "item_needed_id" }
+    if (!options.sortBy) { options.sortBy = "active_service_id" }
     const result = await paginate("activeService", filters, options)
     res.status(200).send({ success: true, result });
 
@@ -20,7 +20,7 @@ const getActiveService = TrackError(async (req, res, next) => {
     const id = req.params.id
     const result = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { dosages: true, readings: true, technician: true } });
     if (!result) {
-        return res.status(404).send({ success: false, message: "ItemsNeeded doesnt not exists" });
+        return res.status(404).send({ success: false, message: "Result doesnt not exists" });
     }
     res.status(200).send({ success: true, result })
 })

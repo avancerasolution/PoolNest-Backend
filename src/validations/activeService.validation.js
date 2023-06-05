@@ -48,10 +48,10 @@ const updateActiveService = {
         cost: Joi.number(),
         price: Joi.number(),
         total: Joi.number(),
+        technician_id: Joi.string(),
         payment_method: Joi.string(),
         payment_status: Joi.string(),
     }),
-
 };
 
 module.exports = { createActiveService, getActiveServices, getActiveService, updateActiveService, createActiveServices };

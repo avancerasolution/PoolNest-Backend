@@ -17,49 +17,63 @@ enum Role {
   Technician
 }
 
-enum FrequencyForService {
+enum frequencyForService {
   WEEKLY
   EVERY_TWO_WEEKS
   EVERY_THREE_WEEKS
   EVERY_FOUR_WEEKS
 }
 
+enum laborCostType {
+  PER_STOP
+  PER_MONTH
+}
+
+enum rateType {
+  NONE
+  PER_STOP_WITH_CHEMICAL
+  PER_STOP_PLUS_CHEMICAL
+  PER_MONTH_WITH_CHEMICAL
+  PER_MONTH_PLUS_CHEMICAL
+}
+
 model User {
-  id                      String             @id @default(uuid())
-  email                   String             @unique
-  first_name              String
-  last_name               String
-  username                String             @unique
-  user_type               Role //enum 
-  password                String
-  is_active               Boolean            @default(true)
-  color_code              String?
-  see_other_tech          Boolean?
-  manage_admin_panel      Boolean?
-  manage_general_settings Boolean?
-  manage_route_stops      Boolean?
-  rearrange_routes        Boolean?
-  admin_id                String?
-  admin                   User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
-  Technicians             User[]             @relation("AdminToTechnician")
-  Customer                Customer[]
-  WorkOrderType           WorkOrderType[]
-  createdAt               DateTime           @default(now()) // * default value (now)
-  updatedAt               DateTime           @updatedAt
-  Reading                 Reading[]
-  Dosage                  Dosage[]
-  ServiceChecklist        ServiceChecklist[]
-  ServiceLocation         ServiceLocation[]
-  Waterbody               Waterbody[]        @relation("WaterbodytoAdmin")
-  WaterbodyTechnician     Waterbody[]        @relation("WaterbodytoTechnician")
-  Service                 Service[]          @relation("ServiceToAdmin")
-  ServiceTechnician       Service[]          @relation("ServiceToTechnician")
-  WorkOrderTechnician     WorkOrder[]        @relation("WorkOrderToTechnician")
-  WorkOrderAdmin          WorkOrder[]        @relation("WorkOrderToAdmin")
-  Equipment               Equipment[]
-  ItemNeeded              ItemNeeded[]
-  ActiveServiceTechnician ActiveService[]    @relation("TechnicianToActiveService")
-  ActiveServiceAdmin      ActiveService[]    @relation("AdminToActiveService")
+  id                        String             @id @default(uuid())
+  email                     String             @unique
+  first_name                String
+  last_name                 String
+  username                  String             @unique
+  user_type                 Role //enum 
+  password                  String
+  is_active                 Boolean            @default(true)
+  color_code                String?
+  see_other_tech            Boolean?
+  manage_admin_panel        Boolean?
+  manage_general_settings   Boolean?
+  manage_route_stops        Boolean?
+  rearrange_routes          Boolean?
+  admin_id                  String?
+  admin                     User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
+  Technicians               User[]             @relation("AdminToTechnician")
+  Customer                  Customer[]
+  WorkOrderType             WorkOrderType[]
+  createdAt                 DateTime           @default(now()) // * default value (now)
+  updatedAt                 DateTime           @updatedAt
+  Reading                   Reading[]
+  Dosage                    Dosage[]
+  ServiceChecklist          ServiceChecklist[]
+  ServiceLocationAdmin      ServiceLocation[]  @relation("AdminToServiceLocation")
+  Waterbody                 Waterbody[]        @relation("WaterbodytoAdmin")
+  WaterbodyTechnician       Waterbody[]        @relation("WaterbodytoTechnician")
+  Service                   Service[]          @relation("ServiceToAdmin")
+  ServiceTechnician         Service[]          @relation("ServiceToTechnician")
+  WorkOrderTechnician       WorkOrder[]        @relation("WorkOrderToTechnician")
+  WorkOrderAdmin            WorkOrder[]        @relation("WorkOrderToAdmin")
+  Equipment                 Equipment[]
+  ItemNeeded                ItemNeeded[]
+  ActiveServiceTechnician   ActiveService[]    @relation("TechnicianToActiveService")
+  ActiveServiceAdmin        ActiveService[]    @relation("AdminToActiveService")
+  TechnicianServiceLocation ServiceLocation[]  @relation("TechnicianToServiceLocation")
 }
 
 model Customer {
@@ -89,11 +103,13 @@ model Customer {
 }
 
 model ServiceLocation {
-  service_location_id          String      @id @default(uuid())
-  admin                        User        @relation(fields: [admin_id], references: [id])
+  service_location_id          String        @id @default(uuid())
+  admin                        User          @relation("AdminToServiceLocation", fields: [admin_id], references: [id])
   admin_id                     String
-  customer                     Customer    @relation(fields: [customer_id], references: [customer_id])
+  customer                     Customer      @relation(fields: [customer_id], references: [customer_id])
   customer_id                  String
+  technician                   User          @relation("TechnicianToServiceLocation", fields: [technician_id], references: [id])
+  technician_id                String
   name                         String
   city                         String
   state                        String
@@ -107,40 +123,40 @@ model ServiceLocation {
   sales_tax_group              String?
   rate                         Int
   labor_cost                   Int
-  labor_cost_type              String?
+  labor_cost_type              laborCostType
   notes                        String
   notify_sms                   Boolean
   notify_email                 Boolean
   notify_work_completion_sms   Boolean
   notify_work_completion_email Boolean
   WaterBody                    Waterbody[]
-  createdAt                    DateTime    @default(now()) // * default value (now)
-  updatedAt                    DateTime    @updatedAt
+  createdAt                    DateTime      @default(now()) // * default value (now)
+  updatedAt                    DateTime      @updatedAt
   Service                      Service[]
   WorkOrder                    WorkOrder[]
 }
 
 model Waterbody {
-  waterbody_id        String             @id @default(uuid())
-  admin               User               @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
+  waterbody_id        String              @id @default(uuid())
+  admin               User                @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  customer            Customer           @relation(fields: [customer_id], references: [customer_id])
+  customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
-  service_location    ServiceLocation    @relation(fields: [service_location_id], references: [service_location_id])
+  service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  technician          User               @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
+  technician          User                @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
   latitude            String
   longitude           String
   technician_id       String
   waterbody_type      String
   name                String
   assigned_day        String
-  frequency           String
-  media               String[]           @default([])
+  frequency           frequencyForService
+  media               String[]            @default([])
   start_date          DateTime
-  end_date            DateTime
-  createdAt           DateTime           @default(now()) // * default value (now)
-  updatedAt           DateTime           @updatedAt
+  end_date            String
+  createdAt           DateTime            @default(now()) // * default value (now)
+  updatedAt           DateTime            @updatedAt
   Service             Service[]
   WorkOrder           WorkOrder[]
   Equipment           Equipment[]
@@ -252,25 +268,24 @@ model ServiceChecklist {
 }
 
 model Service {
-  service_id          String          @id @default(uuid())
-  admin               User            @relation("ServiceToAdmin", fields: [admin_id], references: [id])
+  service_id          String              @id @default(uuid())
+  admin               User                @relation("ServiceToAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  technician          User            @relation("ServiceToTechnician", fields: [technician_id], references: [id])
+  technician          User                @relation("ServiceToTechnician", fields: [technician_id], references: [id])
   technician_id       String
-  waterbody           Waterbody       @relation(fields: [waterbody_id], references: [waterbody_id])
+  waterbody           Waterbody           @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id        String
-  service_location    ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
+  service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  customer            Customer        @relation(fields: [customer_id], references: [customer_id])
+  customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
   assigned_day        String
   status              String
-  frequency           String
+  frequency           frequencyForService
   start_date          DateTime
-  stop_date           DateTime
-  images              String[]        @default([])
-  createdAt           DateTime        @default(now()) // * default value (now)
-  updatedAt           DateTime        @updatedAt
+  stop_date           DateTime?
+  createdAt           DateTime            @default(now()) // * default value (now)
+  updatedAt           DateTime            @updatedAt
   ActiveService       ActiveService[]
 }
 
@@ -307,6 +322,8 @@ model ActiveService {
   status            String?   @default("incomplete")
   technician        User      @relation("TechnicianToActiveService", fields: [technician_id], references: [id])
   technician_id     String
+  start_date        DateTime
+  end_date          String
   cost              Int?
   price             Int?
   total             Int?

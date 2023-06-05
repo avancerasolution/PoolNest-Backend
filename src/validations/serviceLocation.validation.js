@@ -3,6 +3,7 @@ const Joi = require("joi");
 const createServiceLocation = {
     body: Joi.object().keys({
         customer_id: Joi.string().required(),
+        technician_id: Joi.string().required(),
         name: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
@@ -16,7 +17,7 @@ const createServiceLocation = {
         sales_tax_group: Joi.string().required(),
         rate: Joi.number().required(),
         labor_cost: Joi.number().required(),
-        labor_cost_type: Joi.string(),
+        labor_cost_type: Joi.string().valid("per_month", "per_stop"),
         notes: Joi.string().required(),
         notify_sms: Joi.bool().required(),
         notify_email: Joi.bool().required(),

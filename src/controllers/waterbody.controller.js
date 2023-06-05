@@ -46,7 +46,7 @@ const createWaterbody = TrackError(async (req, res, next) => {
 const deleteWaterbodyByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id
-        const result = await prismaClient.waterbody.delete({ where: { work_order_type_id: id } })
+        const result = await prismaClient.waterbody.delete({ where: { waterbody_id: id } })
         res.status(200).send(result)
 
     } catch (e) {

@@ -26,7 +26,11 @@ const getService = TrackError(async (req, res, next) => {
 
 
 const createService = TrackError(async (req, res, next) => {
+    console.log(req.body)
     req.body.admin_id = req.user.admin_id;
+
+
+
     const result = await prismaClient.service.create({ data: req.body, })
     res.status(201).send({ success: true, result })
 })
