@@ -17,7 +17,7 @@ const createServiceLocation = {
         sales_tax_group: Joi.string().required(),
         rate: Joi.number().required(),
         labor_cost: Joi.number().required(),
-        labor_cost_type: Joi.string().valid("per_month", "per_stop"),
+        labor_cost_type: Joi.string().valid("PER_MONTH", "PER_STOP", "NONE"),
         notes: Joi.string().required(),
         notify_sms: Joi.bool().required(),
         notify_email: Joi.bool().required(),

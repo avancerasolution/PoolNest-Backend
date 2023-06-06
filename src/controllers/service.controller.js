@@ -1,4 +1,6 @@
+const httpStatus = require("http-status");
 const TrackError = require("../middleware/TrackError");
+const { getWeeksInRange, getNumberForFrequency, addDays } = require("../services/helperFunctions");
 const { paginate } = require("../utils/paginate.prisma");
 const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
@@ -25,15 +27,89 @@ const getService = TrackError(async (req, res, next) => {
 })
 
 
+//whenever a service is created this popualtes the active service by entries of for the current running work.
+
 const createService = TrackError(async (req, res, next) => {
-    console.log(req.body)
-    req.body.admin_id = req.user.admin_id;
-
-
-
-    const result = await prismaClient.service.create({ data: req.body, })
-    res.status(201).send({ success: true, result })
+    await prismaClient.$transaction(async (prisma) => {
+        const serviceLocation = await prisma.serviceLocation.findFirst({ where: { service_location_id: req.body.service_location_id } })
+        if (!serviceLocation) {
+            return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "serviceLocation doesnt exists" })
+        }
+        try {
+            req.body.price
+            req.body.admin_id = req.user.admin_id;
+            const result = await prisma.service.create({ data: req.body, })
+            const data = []
+            console.log(req.body, "<=== body")
+            if (req.body.start_date > req.body.stop_date || getWeeksInRange(req.body.start_date, req.body.stop_date) < 1) {
+                return res.status(400).send({ success: false, message: "invalid dates" })
+            }
+            req.body.admin_id = req.user.admin_id;
+            let currentDate = new Date()
+            // change according to tiemzone
+            req.body.start_date.setHours(1, 0, 0, 0)
+            if (req.body.stop_date != "NO_END") {
+                req.body.stop_date.setHours(1, 0, 0, 0)
+            }
+            // ########################################
+            console.log(req.body.start_date, "<==== start date")
+            console.log(req.body.stop_date, "<==== stop date")
+            currentDate.setHours(0, 0, 0, 0)
+            console.log(currentDate, "<==current")
+            var lastDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1) // get last day of the current month
+            lastDateOfMonth.setHours(0, 0, 0, 0)    // set hours to starting point
+            console.log(lastDateOfMonth, "<=== last date of month")
+            if (req.body.start_date > lastDateOfMonth) { // if the start date goes in the next month it will be handled then by the cron job
+                return res.status(200).send({ success: true, result: { message: "no service created for this month" } })
+            }
+            let numberOfWeeks = 0;
+            if (req.body.stop_date !== "NO_END") { // if the end_date has a date 
+                numberOfWeeks = getWeeksInRange(req.body.start_date, req.body.stop_date < lastDateOfMonth ? req.body.stop_date : lastDateOfMonth)// Our stop date is smaller than last day of the current month then stop date is selected or else lastdate of the current month is selected
+            }
+            else {
+                numberOfWeeks = getWeeksInRange(req.body.start_date, lastDateOfMonth)// Our stop date is smaller than last day of the current month then stop date is selected or else lastdate of the current month is selected
+            }
+            var numberOfService = getNumberForFrequency(req.body.frequency);
+            console.log(numberOfWeeks, "no of weeks") // we get number of weeks that we can add to the current month , now we need to add services wrt to selected day and date
+            console.log(getNumberForFrequency(req.body.frequency), "<====== freq") // number of times we need to add service in each month
+            if (getNumberForFrequency(req.body.frequency) > numberOfWeeks) {//if the number of weeks we have is leess than frequency than the service will be created on every remaining week of the month
+                numberOfService = numberOfWeeks;
+            }
+            let assigned_date = req.body.start_date;
+            let increment = 0;
+            console.log(numberOfService, "<==== final number of service to be created")
+            for (let index = 0; index < numberOfService; index++) {
+                console.log("i ran", index)
+                const service = {
+                    ...req.body,
+                    service_id: result.service_id,
+                    assigned_date: addDays(req.body.start_date, numberOfService == 2 ? increment * 2 : increment),
+                    rate: serviceLocation.rate,
+                    labor_cost: serviceLocation.labor_cost,
+                    labor_cost_type: serviceLocation.labor_cost_type,
+                    minutes_per_stop: serviceLocation.minutes_per_stop
+                };
+                increment = increment + 7;
+                data.push(service)
+            }
+            console.log(data, "<=== data")
+            const activeServices = await prisma.activeService.createMany({ data: data })
+            res.status(201).send({ success: true, result: activeServices })
+        } catch (e) {
+            console.error(e);
+            res.status(400).send({ success: false, message: "unable to handle service creation, please recheck details and try again " })
+        }
+    })
 })
+
+
+
+
+const wow = async () => {
+    // await prismaClient.waterbody.deleteMany()
+}
+
+wow()
 
 
 

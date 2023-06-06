@@ -6,11 +6,11 @@ const createService = {
         technician_id: Joi.string().required(),
         waterbody_id: Joi.string().required(),
         service_location_id: Joi.string().required(),
-        assigned_day: Joi.string().required(),
+        assigned_day: Joi.string().required().valid("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"),
         status: Joi.string().required(),
         frequency: Joi.string().valid("WEEKLY", "EVERY_TWO_WEEKS", "EVERY_THREE_WEEKS", "EVERY_FOUR_WEEKS").required(),
         start_date: Joi.date().required(),
-        stop_date: Joi.date().required(),
+        stop_date: Joi.alternatives().try(Joi.string().valid("NO_END"), Joi.date()).required()
     }),
 };
 
@@ -42,7 +42,7 @@ const updateService = {
         technician_id: Joi.string(),
         waterbody_id: Joi.string(),
         service_location_id: Joi.string(),
-        assigned_day: Joi.string(),
+        assigned_day: Joi.string().valid("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"),
         status: Joi.string(),
         frequency: Joi.string().valid("WEEKLY", "EVERY_TWO_WEEKS", "EVERY_THREE_WEEKS", "EVERY_FOUR_WEEKS"),
         start_date: Joi.date(),

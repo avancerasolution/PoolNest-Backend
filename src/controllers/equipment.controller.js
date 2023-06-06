@@ -36,7 +36,6 @@ const createEquipments = TrackError(async (req, res, next) => {
     let body = req.body.map((item) => {
         return { ...item, admin_id: req.user.admin_id }
     })
-    console.log(body, "<====")
     const result = await prismaClient.equipment.createMany({ data: body })
     res.status(201).send({ success: true, result })
 })
