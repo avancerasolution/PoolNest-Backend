@@ -5,12 +5,14 @@ const prismaClient = require("../utils/prisma.client")
 
 
 const getDosages = TrackError(async (req, res, next) => {
-    const filters = pick(req.query, ["name", "description"])
+    console.log(req.query, "<query")
+    const filters = pick(req.query, ["name", "description", "active_service_id"])
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
     if (!options.sortBy) { options.sortBy = "dosage_id" }
+    console.log(filters, "<=== fitlers")
     const result = await paginate("dosage", filters, options)
     res.status(200).send({ success: true, result });
 
@@ -29,6 +31,14 @@ const getDosage = TrackError(async (req, res, next) => {
 const createDosage = TrackError(async (req, res, next) => {
     req.body.admin_id = req.user.admin_id;
     const result = await prismaClient.dosage.create({ data: req.body, })
+    res.status(201).send({ success: true, result })
+})
+
+const createDosages = TrackError(async (req, res, next) => {
+    let body = req.body.map((item) => {
+        return { ...item, admin_id: req.user.admin_id }
+    })
+    const result = await prismaClient.dosage.createMany({ data: body })
     res.status(201).send({ success: true, result })
 })
 
@@ -69,4 +79,4 @@ const updateDosageByID = TrackError(async (req, res, next) => {
 })
 
 
-module.exports = { getDosages, createDosage, deleteDosageByID, getDosage, updateDosageByID, deleteAllDosages }
+module.exports = { getDosages, createDosage, deleteDosageByID, getDosage, updateDosageByID, deleteAllDosages, createDosages }

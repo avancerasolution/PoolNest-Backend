@@ -5,13 +5,7 @@ const prismaClient = require("../utils/prisma.client")
 
 
 const getActiveServices = TrackError(async (req, res, next) => {
-    // customer_id: Joi.string(),
-    // technicianٖ_id: Joi.string(),
-    // service_location_id: Joi.string(),
-    // waterbody_id: Joi.string(),
-    // service_id: Joi.string(),
-    // status: Joi.string(),
-    const filters = pick(req.query, ["customer_id", "technician_id", "service_location_id", "waterbody_id", "service_id", "service_id", "status", "assignedDate", "assigned_day", "service_status"])
+    const filters = pick(req.query, ["customer_id", "technician_id", "service_location_id", "waterbody_id", "service_id", "status", "assignedDate", "assigned_day", "service_status"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }

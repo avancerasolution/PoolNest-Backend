@@ -26,4 +26,11 @@ const getUserByID = async (id) => {
     return await prismaClient.user.findUnique({ where: { id } })
 }
 
-module.exports = { emailExist, usernameExist, getUserByEmail, getUserByID }
+const colorCodeExists = async (color_code, admin_id) => {
+    const result = await prismaClient.user.findFirst({ where: { color_code, admin_id } })
+    if (result) return true
+    return false
+}
+
+
+module.exports = { emailExist, usernameExist, getUserByEmail, getUserByID, colorCodeExists }

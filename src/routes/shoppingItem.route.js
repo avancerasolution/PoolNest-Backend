@@ -1,7 +1,8 @@
 const express = require("express")
 const router = express.Router();
 const { shoppingItemController } = require("../controllers")
-const upload = require("../middleware/multer")
+const upload = require("../middleware/multer");
+const { verify } = require("../middleware/auth");
 
 const uploadOptions = {}
 
@@ -19,12 +20,12 @@ const uploadOptions = {}
  *          
  * 
  */
-router.route("/").get(shoppingItemController.getShoppingItems).post(upload.array("product_image", 3), shoppingItemController.createShoppingItem)
+router.route("/").get(verify(), shoppingItemController.getShoppingItems).post(verify(), upload.array("product_image", 3), shoppingItemController.createShoppingItem)
 
 router.route("/:id")
-    .get(shoppingItemController.getShoppingItem)
-    .delete(shoppingItemController.deleteShoppingItemByID)
-    .patch(upload.array("product_image", 3), shoppingItemController.updateShoppingItemByID);
+    .get(verify(), shoppingItemController.getShoppingItem)
+    .delete(verify(), shoppingItemController.deleteShoppingItemByID)
+    .patch(verify(), upload.array("product_image", 3), shoppingItemController.updateShoppingItemByID);
 
 
 module.exports = router;

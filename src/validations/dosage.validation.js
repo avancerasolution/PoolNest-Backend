@@ -8,13 +8,29 @@ const createDosage = {
         cost_per_unit: Joi.number().required(),
         price_per_unit: Joi.number().required(),
         include_service_price: Joi.bool().required(),
-        values: Joi.array().items(Joi.number()).required()
+        values: Joi.array().items(Joi.number()).required(),
+        active_service_id: Joi.string().uuid().required()
     }),
 };
 
+
+const createDosages = {
+    body: Joi.array().items(Joi.object().keys({
+        name: Joi.string().required(),
+        unit_of_measurement: Joi.string().required(),
+        description: Joi.string().required(),
+        cost_per_unit: Joi.number().required(),
+        price_per_unit: Joi.number().required(),
+        include_service_price: Joi.bool().required(),
+        values: Joi.array().items(Joi.number()).required(),
+        active_service_id: Joi.string().uuid().required()
+    }))
+};
+
+
 const getDosages = {
     query: Joi.object().keys({
-        name: Joi.string(),
+        active_service_id: Joi.string().uuid(),
         description: Joi.string(),
         pageNumber: Joi.number().integer(),
         sortByField: Joi.string(),
@@ -45,4 +61,4 @@ const updateDosage = {
 
 };
 
-module.exports = { createDosage, getDosages, getDosage, updateDosage };
+module.exports = { createDosage, getDosages, getDosage, updateDosage, createDosages };

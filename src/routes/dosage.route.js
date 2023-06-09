@@ -22,6 +22,13 @@ const { verify } = require("../middleware/auth");
 router.route("/")
     .get(verify(), validate(dosageValidation.getDosages), dosageController.getDosages)
     .post(verify(), validate(dosageValidation.createDosage), dosageController.createDosage)
+
+router.route("/createMany")
+    .post(
+        verify()
+        , validate(dosageValidation.createDosages)
+        , dosageController.createDosages)
+
 router.route("/:id")
     .get(verify(), validate(dosageValidation.getDosage), dosageController.getDosage)
     .delete(verify(), validate(dosageValidation.getDosage), dosageController.deleteDosageByID)

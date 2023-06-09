@@ -1,12 +1,27 @@
 const TrackError = require("../middleware/TrackError");
+const { paginate } = require("../utils/paginate.prisma");
+const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
 
 
 const getShoppingItems = TrackError(async (req, res, next) => {
-    const result = await prismaClient.shoppingItem.findMany()
+    const filters = pick(req.query, ["email", "name", "status", "customer_type", "company_name", "mobile_no_primary"])
+    if (req.user.user_type !== "Client") {
+        filters.admin_id = req.user.admin_id;
+    }
+    const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
+    if (!options.sortBy) { options.sortBy = "shopping_item_id" }
+    const result = await paginate("shoppingItem", filters, options)
     res.status(200).send({ success: true, result });
 
 })
+
+// const wow = async () => {
+//     const wow = await prismaClient.shoppingItem.deleteMany()
+// }
+
+// wow();
+
 
 const getShoppingItem = TrackError(async (req, res, next) => {
     const id = req.params.id
@@ -19,6 +34,7 @@ const getShoppingItem = TrackError(async (req, res, next) => {
 
 
 const createShoppingItem = TrackError(async (req, res, next) => {
+    req.body.admin_id = req.user.admin_id;
     if (req.files && req.files.length !== 0) {
         const imageNames = req.files.map((image) => image.filename)
         req.body.product_images = imageNames
@@ -73,6 +89,7 @@ const updateShoppingItemByID = TrackError(async (req, res, next) => {
         res.status(400).send({ success: false, message: e.message })
     }
 })
+
 
 
 module.exports = {

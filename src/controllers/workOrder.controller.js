@@ -11,7 +11,7 @@ const getWorkOrders = TrackError(async (req, res, next) => {
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "work_order_id" }
-    const result = await paginate("workOrder", filters, options)
+    const result = await paginate("workOrder", filters, options, { work_order_type: true })
     res.status(200).send({ success: true, result });
 
 

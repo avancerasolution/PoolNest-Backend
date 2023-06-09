@@ -1,5 +1,6 @@
+const httpStatus = require("http-status");
 const TrackError = require("../middleware/TrackError");
-const { emailExist, usernameExist } = require("../services/user.services");
+const { emailExist, usernameExist, colorCodeExists } = require("../services/user.services");
 const { paginate } = require("../utils/paginate.prisma");
 const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
@@ -31,6 +32,11 @@ const getUser = TrackError(async (req, res, next) => {
 
 
 const createUser = TrackError(async (req, res, next) => {
+    if (req.body.color_code && req.body.user_type === "Technician") {
+        if (await colorCodeExists(req.body.color_code, req.user.admin_id)) {
+            return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "color_code already used for the other technician" })
+        }
+    }
     if (req.user.user_type !== "Client") {
         req.body.admin_id = req.user.admin_id
     }

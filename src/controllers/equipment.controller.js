@@ -40,10 +40,6 @@ const createEquipments = TrackError(async (req, res, next) => {
     res.status(201).send({ success: true, result })
 })
 
-
-
-
-
 const deleteEquipmentByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id
@@ -64,7 +60,6 @@ const deleteAllEquipments = TrackError(async (req, res, next) => {
     const result = await prismaClient.equipment.deleteMany()
     res.status(200).send(result)
 })
-
 
 
 const updateEquipmentByID = TrackError(async (req, res, next) => {
