@@ -1,3 +1,4 @@
+const httpStatus = require("http-status");
 const TrackError = require("../middleware/TrackError");
 const { emailExist } = require("../services/customer.services");
 const { paginate } = require("../utils/paginate.prisma");
@@ -12,13 +13,13 @@ const getCustomers = TrackError(async (req, res, next) => {
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "customer_id" }
-    const result = await paginate("customer", filters, options)
+    const result = await paginate("customer", filters, options, { Tags: true })
     res.status(200).send({ success: true, result });
 
 })
 const getCustomer = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.customer.findFirst({ where: { customer_id: id }, include: { ServiceLocation: true, Waterbody: true, } });
+    const result = await prismaClient.customer.findFirst({ where: { customer_id: id }, include: { ServiceLocation: true, Waterbody: true, Tags: true } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Customer doesnt not exists" });
     }
@@ -31,8 +32,21 @@ const createCustomer = TrackError(async (req, res, next) => {
         return res.status(400).send({ success: false, message: "customer with this email already exists" })
     }
     req.body.admin_id = req.user.admin_id;
-    const result = await prismaClient.customer.create({ data: req.body, })
-    res.status(201).send({ success: true, result })
+    if (req.body.tags) {
+        req.body.Tags = { create: req.body.tags.map((tag) => { return { name: tag, admin_id: req.user.admin_id } }) }
+        const checkTags = await prismaClient.tags.findMany({ where: { name: { in: req.body.Tags } } })
+        console.log(checkTags, "<=== wow")
+        delete req.body.tags;
+    }
+    // try {
+    //     console.log(req.body, "<=== body")
+    //     const result = await prismaClient.customer.create({ data: req.body, })
+    //     return res.status(201).send({ success: true, result })
+    // } catch (e) {
+    //     console.log(e, "<= eee")
+    //     return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid tag" })
+    // }
+    res.send("wow")
 })
 
 const deleteCustomerByID = TrackError(async (req, res, next) => {

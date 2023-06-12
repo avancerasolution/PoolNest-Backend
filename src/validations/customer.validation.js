@@ -16,6 +16,7 @@ const createCustomer = {
         company_address: Joi.string(),
         billing_address: Joi.string(),
         billing_details: Joi.string(),
+        tags: Joi.array(),
     }),
 };
 

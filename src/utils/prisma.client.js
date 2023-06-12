@@ -6,6 +6,7 @@ const prismaClient = new PrismaClient()
 
 prismaClient.$connect().then(async () => {
     console.log("Prisma client is connected");
+    const jobs = require("../jobs/")
     await onServerStartUp()
 });
 

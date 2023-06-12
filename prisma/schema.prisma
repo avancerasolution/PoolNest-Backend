@@ -64,7 +64,7 @@ model User {
   manage_route_stops        Boolean?
   rearrange_routes          Boolean?
   admin_id                  String?
-  admin                     User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
+  Admin                     User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
   Technicians               User[]             @relation("AdminToTechnician")
   Customer                  Customer[]
   WorkOrderType             WorkOrderType[]
@@ -88,12 +88,22 @@ model User {
   ActiveWorkOrderAdmin      ActiveWorkOrder[]  @relation("ActiveWorkOrderToAdmin")
   ActiveWorkOrderTechnician ActiveWorkOrder[]  @relation("ActiveWorkOrderToTechnician")
   ShoppingItem              ShoppingItem[]
+
+  Tags Tags[]
+}
+
+model Tags {
+  Admin    User       @relation(fields: [admin_id], references: [id])
+  admin_id String
+  tag_id   String     @id @default(uuid())
+  name     String
+  Customer Customer[] @relation("CustomerTag")
 }
 
 model Customer {
   customer_id         String            @id @default(uuid())
   admin_id            String
-  admin               User              @relation(fields: [admin_id], references: [id])
+  Admin               User              @relation(fields: [admin_id], references: [id])
   customer_type       String
   first_name          String
   last_name           String
@@ -116,15 +126,16 @@ model Customer {
   WorkOrder           WorkOrder[]
   ActiveService       ActiveService[]
   ActiveWorkOrder     ActiveWorkOrder[]
+  Tags                Tags[]            @relation("CustomerTag")
 }
 
 model ServiceLocation {
   service_location_id          String            @id @default(uuid())
-  admin                        User              @relation("AdminToServiceLocation", fields: [admin_id], references: [id])
+  Admin                        User              @relation("AdminToServiceLocation", fields: [admin_id], references: [id])
   admin_id                     String
   customer                     Customer          @relation(fields: [customer_id], references: [customer_id])
   customer_id                  String
-  technician                   User              @relation("TechnicianToServiceLocation", fields: [technician_id], references: [id])
+  Technician                   User              @relation("TechnicianToServiceLocation", fields: [technician_id], references: [id])
   technician_id                String
   name                         String
   city                         String
@@ -156,13 +167,13 @@ model ServiceLocation {
 
 model Waterbody {
   waterbody_id        String              @id @default(uuid())
-  admin               User                @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
+  Admin               User                @relation("WaterbodytoAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  customer            Customer            @relation(fields: [customer_id], references: [customer_id])
+  Customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
-  service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
+  Service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  technician          User                @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
+  Technician          User                @relation("WaterbodytoTechnician", fields: [technician_id], references: [id])
   latitude            String
   longitude           String
   technician_id       String
@@ -188,7 +199,7 @@ model Waterbody {
 model WorkOrderType {
   work_order_type_id     String            @id @default(uuid())
   admin_id               String
-  admin                  User              @relation(fields: [admin_id], references: [id])
+  Admin                  User              @relation(fields: [admin_id], references: [id])
   name                   String
   color_code             String
   recurrence             String
@@ -211,15 +222,15 @@ model WorkOrderType {
 
 model WorkOrder {
   work_order_id          String            @id @default(uuid())
-  admin                  User              @relation("WorkOrderToAdmin", fields: [admin_id], references: [id])
+  Admin                  User              @relation("WorkOrderToAdmin", fields: [admin_id], references: [id])
   admin_id               String
-  technician             User              @relation("WorkOrderToTechnician", fields: [technician_id], references: [id])
+  Technician             User              @relation("WorkOrderToTechnician", fields: [technician_id], references: [id])
   technician_id          String
-  waterbody              Waterbody         @relation(fields: [waterbody_id], references: [waterbody_id])
+  Waterbody              Waterbody         @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id           String
-  service_location       ServiceLocation   @relation(fields: [service_location_id], references: [service_location_id])
+  Service_location       ServiceLocation   @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id    String
-  work_order_type        WorkOrderType     @relation(fields: [work_order_type_id], references: [work_order_type_id])
+  Work_order_type        WorkOrderType     @relation(fields: [work_order_type_id], references: [work_order_type_id])
   work_order_type_id     String
   customer               Customer          @relation(fields: [customer_id], references: [customer_id])
   customer_id            String
@@ -240,7 +251,7 @@ model WorkOrder {
 
 model ShoppingItem {
   shopping_item_id String    @id @default(uuid())
-  admin            User      @relation(fields: [admin_id], references: [id])
+  Admin            User      @relation(fields: [admin_id], references: [id])
   admin_id         String
   waterbody        Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id     String
@@ -258,7 +269,7 @@ model ShoppingItem {
 model Dosage {
   dosage_id             String        @id @default(uuid())
   admin_id              String
-  admin                 User          @relation(fields: [admin_id], references: [id])
+  Admin                 User          @relation(fields: [admin_id], references: [id])
   name                  String
   description           String
   unit_of_measurement   String
@@ -275,7 +286,7 @@ model Dosage {
 model Reading {
   reading_id          String        @id @default(uuid())
   admin_id            String
-  admin               User          @relation(fields: [admin_id], references: [id])
+  Admin               User          @relation(fields: [admin_id], references: [id])
   name                String
   description         String
   unit_of_measurement String
@@ -288,7 +299,7 @@ model Reading {
 
 model ServiceChecklist {
   service_checklist_id    String    @id @default(uuid())
-  admin                   User      @relation(fields: [admin_id], references: [id])
+  Admin                   User      @relation(fields: [admin_id], references: [id])
   admin_id                String
   description             String
   description_on_complete String
@@ -300,13 +311,13 @@ model ServiceChecklist {
 
 model Service {
   service_id          String              @id @default(uuid())
-  admin               User                @relation("ServiceToAdmin", fields: [admin_id], references: [id])
+  Admin               User                @relation("ServiceToAdmin", fields: [admin_id], references: [id])
   admin_id            String
-  technician          User                @relation("ServiceToTechnician", fields: [technician_id], references: [id])
+  Technician          User                @relation("ServiceToTechnician", fields: [technician_id], references: [id])
   technician_id       String
   waterbody           Waterbody           @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id        String
-  service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
+  Service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
   customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
@@ -323,7 +334,7 @@ model Service {
 model Equipment {
   equipment_id String    @id @default(uuid())
   admin_id     String
-  admin        User      @relation(fields: [admin_id], references: [id])
+  Admin        User      @relation(fields: [admin_id], references: [id])
   Waterbody    Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id String
   name         String
@@ -334,7 +345,7 @@ model Equipment {
 
 model ItemNeeded {
   item_needed_id String    @id @default(uuid())
-  admin          User      @relation(fields: [admin_id], references: [id])
+  Admin          User      @relation(fields: [admin_id], references: [id])
   Waterbody      Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id   String
   admin_id       String
@@ -346,13 +357,13 @@ model ItemNeeded {
 
 model ActiveService {
   active_service_id   String              @id @default(uuid())
-  admin               User                @relation("AdminToActiveService", fields: [admin_id], references: [id])
+  Admin               User                @relation("AdminToActiveService", fields: [admin_id], references: [id])
   admin_id            String
   service             Service             @relation(fields: [service_id], references: [service_id])
   service_id          String
   service_status      String              @default("incomplete")
   status              String?
-  technician          User                @relation("TechnicianToActiveService", fields: [technician_id], references: [id])
+  Technician          User                @relation("TechnicianToActiveService", fields: [technician_id], references: [id])
   technician_id       String
   Service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
@@ -382,19 +393,19 @@ model ActiveService {
 
 model ActiveWorkOrder {
   active_work_order_id   String          @id @default(uuid())
-  work_order             WorkOrder       @relation(fields: [work_order_id], references: [work_order_id])
+  Work_order             WorkOrder       @relation(fields: [work_order_id], references: [work_order_id])
   work_order_id          String
-  admin                  User            @relation("ActiveWorkOrderToAdmin", fields: [admin_id], references: [id])
+  Admin                  User            @relation("ActiveWorkOrderToAdmin", fields: [admin_id], references: [id])
   admin_id               String
-  technician             User            @relation("ActiveWorkOrderToTechnician", fields: [technician_id], references: [id])
+  Technician             User            @relation("ActiveWorkOrderToTechnician", fields: [technician_id], references: [id])
   technician_id          String
-  waterbody              Waterbody       @relation(fields: [waterbody_id], references: [waterbody_id])
+  Waterbody              Waterbody       @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id           String
-  service_location       ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
+  Service_location       ServiceLocation @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id    String
-  work_order_type        WorkOrderType   @relation(fields: [work_order_type_id], references: [work_order_type_id])
+  Work_order_type        WorkOrderType   @relation(fields: [work_order_type_id], references: [work_order_type_id])
   work_order_type_id     String
-  customer               Customer        @relation(fields: [customer_id], references: [customer_id])
+  Customer               Customer        @relation(fields: [customer_id], references: [customer_id])
   customer_id            String
   status                 String
   work_order_status      String

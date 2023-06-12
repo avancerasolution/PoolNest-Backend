@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt")
-const prismaClient = require("./prisma.client")
+const bcrypt = require("bcrypt");
+const { func } = require("joi");
 
 const comparePassword = async (hash, password) => {
     return await bcrypt.compare(password, hash)
@@ -16,6 +16,9 @@ function getDateRange(dateStr) {
         lte
     };
 }
+
+
+const getDateRangeObj = () => { };
 
 
 
