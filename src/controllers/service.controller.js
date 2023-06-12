@@ -35,6 +35,9 @@ const createService = TrackError(async (req, res, next) => {
         if (!serviceLocation) {
             return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "serviceLocation doesnt exists" })
         }
+        if (req.body.start_date < Date.now()) {
+            return res.status(400).send({ success: false, message: "invalid start_date" })
+        }
         try {
             req.body.price
             req.body.admin_id = req.user.admin_id;
@@ -67,6 +70,8 @@ const createService = TrackError(async (req, res, next) => {
                 numberOfWeeks = getWeeksInRange(req.body.start_date, req.body.stop_date < lastDateOfMonth ? req.body.stop_date : lastDateOfMonth)// Our stop date is smaller than last day of the current month then stop date is selected or else lastdate of the current month is selected
             }
             else {
+                console.log("i ran wo wow owow")
+                console.log(lastDateOfMonth, "<== =last date of month")
                 numberOfWeeks = getWeeksInRange(req.body.start_date, lastDateOfMonth)// Our stop date is smaller than last day of the current month then stop date is selected or else lastdate of the current month is selected
             }
             var numberOfService = getNumberForFrequency(req.body.frequency);
@@ -105,11 +110,11 @@ const createService = TrackError(async (req, res, next) => {
 
 
 
-const wow = async () => {
-    // await prismaClient.waterbody.deleteMany()
-}
+// const wow = async () => {
+//     await prismaClient.activeService.deleteMany()
+// }
 
-wow()
+// wow()
 
 
 

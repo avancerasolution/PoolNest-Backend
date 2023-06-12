@@ -26,14 +26,14 @@ const createActiveServices = {
 const getActiveServices = {
     query: Joi.object().keys({
         customer_id: Joi.string(),
-        technicianٖ_id: Joi.string(),
+        technician_id: Joi.string(),
         service_location_id: Joi.string(),
         waterbody_id: Joi.string(),
+        color_code: Joi.string(),
         service_id: Joi.string(),
         status: Joi.string(),
         assigned_day: Joi.string(),
-        assigned_date: Joi.string(),
-
+        assigned_date: Joi.string().isoDate(),
         frequency: Joi.string(),
         pageNumber: Joi.number().integer(),
         sortByField: Joi.string(),

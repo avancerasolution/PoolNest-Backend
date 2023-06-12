@@ -1,24 +1,36 @@
 const TrackError = require("../middleware/TrackError");
+const { getDateRange } = require("../utils/helperFunction");
 const { paginate } = require("../utils/paginate.prisma");
 const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
 
 
 const getActiveServices = TrackError(async (req, res, next) => {
-    const filters = pick(req.query, ["customer_id", "technician_id", "service_location_id", "waterbody_id", "service_id", "status", "assignedDate", "assigned_day", "service_status"])
+    console.log(req.query, "<=== query")
+    const filters = pick(req.query, ["customer_id", "technician_id", "service_location_id", "waterbody_id", "service_id", "status", "assigned_date", "assigned_day", "service_status", "color_code"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "active_service_id" }
-    const result = await paginate("activeService", filters, options)
+    if (filters.assigned_date) {
+        filters.assigned_date = getDateRange(req.query.assigned_date)
+    }
+    if (filters.color_code) {
+        delete filters.color_code;
+        filters.technician = {
+            color_code: req.query.color_code
+        }
+    }
+    console.log(filters, "<=== filters")
+    const result = await paginate("activeService", filters, options, { technician: true })
     res.status(200).send({ success: true, result });
 
 })
 
 const getActiveService = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { dosages: true, readings: true, technician: true } });
+    const result = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { dosages: true, readings: true, technician: true, customer: true, Waterbody: true, Service_location: true } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Result doesnt not exists" });
     }
