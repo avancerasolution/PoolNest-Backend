@@ -65,6 +65,12 @@ const deleteAllTags = TrackError(async (req, res, next) => {
 })
 
 
+// const wow = async () => {
+//     const result = await prismaClient.tags.deleteMany()
+// }
+
+// wow()
+
 const updateTagByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id

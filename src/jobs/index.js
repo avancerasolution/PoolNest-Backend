@@ -1,6 +1,10 @@
-const { monthlyActiveServiceCreateor } = require("./activeService.jobs")
+const { monthlyActiveServiceCreator } = require("./activeService.jobs")
 
 
 
 
- monthlyActiveServiceCreateor();
+
+
+
+
+// monthlyActiveServiceCreator();

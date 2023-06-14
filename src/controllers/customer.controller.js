@@ -31,22 +31,22 @@ const createCustomer = TrackError(async (req, res, next) => {
     if (await emailExist(req.body.email)) {
         return res.status(400).send({ success: false, message: "customer with this email already exists" })
     }
+
     req.body.admin_id = req.user.admin_id;
     if (req.body.tags) {
         req.body.Tags = { create: req.body.tags.map((tag) => { return { name: tag, admin_id: req.user.admin_id } }) }
-        const checkTags = await prismaClient.tags.findMany({ where: { name: { in: req.body.Tags } } })
-        console.log(checkTags, "<=== wow")
+        const checkTags = await prismaClient.tags.findMany({ where: { name: { in: req.body.Tags.create.map((item) => item.name) } } })
+        if (checkTags.length != req.body.Tags.create.length) {
+            return res.status(400).send({ message: "invalid tags!", success: false })
+        }
         delete req.body.tags;
     }
-    // try {
-    //     console.log(req.body, "<=== body")
-    //     const result = await prismaClient.customer.create({ data: req.body, })
-    //     return res.status(201).send({ success: true, result })
-    // } catch (e) {
-    //     console.log(e, "<= eee")
-    //     return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid tag" })
-    // }
-    res.send("wow")
+    try {
+        const result = await prismaClient.customer.create({ data: req.body, })
+        return res.status(201).send({ success: true, result })
+    } catch (e) {
+        return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid tag" })
+    }
 })
 
 const deleteCustomerByID = TrackError(async (req, res, next) => {

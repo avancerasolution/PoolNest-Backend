@@ -10,6 +10,10 @@ const createService = {
         status: Joi.string().required(),
         frequency: Joi.string().valid("WEEKLY", "EVERY_TWO_WEEKS", "EVERY_THREE_WEEKS", "EVERY_FOUR_WEEKS").required(),
         start_date: Joi.date().required(),
+        rate: Joi.number().required(),
+        labor_cost: Joi.number().required(),
+        labor_cost_type: Joi.string().valid("PER_MONTH", "PER_STOP", "NONE").required(),
+        minutes_per_stop: Joi.number().required(),
         stop_date: Joi.alternatives().try(Joi.string().valid("NO_END"), Joi.date()).required()
     }),
 };
@@ -44,7 +48,11 @@ const updateService = {
         service_location_id: Joi.string(),
         assigned_day: Joi.string().valid("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"),
         status: Joi.string(),
-        frequency: Joi.string().valid("WEEKLY", "EVERY_TWO_WEEKS", "EVERY_THREE_WEEKS", "EVERY_FOUR_WEEKS"),
+        // frequency: Joi.string().valid("WEEKLY", "EVERY_TWO_WEEKS", "EVERY_THREE_WEEKS", "EVERY_FOUR_WEEKS"),  CANT SEND FREQUENCY
+        rate: Joi.number(),
+        labor_cost: Joi.number(),
+        labor_cost_type: Joi.string().valid("PER_MONTH", "PER_STOP", "NONE"),
+        minutes_per_stop: Joi.number(),
         start_date: Joi.date(),
         stop_date: Joi.date(),
     }),

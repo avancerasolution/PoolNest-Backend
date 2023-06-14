@@ -23,7 +23,7 @@ const getActiveServices = TrackError(async (req, res, next) => {
         }
     }
     console.log(filters, "<=== filters")
-    const result = await paginate("activeService", filters, options, { technician: true })
+    const result = await paginate("activeService", filters, options, { Technician: true })
     res.status(200).send({ success: true, result });
 
 })

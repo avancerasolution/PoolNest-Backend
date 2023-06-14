@@ -70,6 +70,7 @@ model User {
   WorkOrderType             WorkOrderType[]
   createdAt                 DateTime           @default(now()) // * default value (now)
   updatedAt                 DateTime           @updatedAt
+  deletedAt                 DateTime?          @default(dbgenerated())
   Reading                   Reading[]
   Dosage                    Dosage[]
   ServiceChecklist          ServiceChecklist[]
@@ -120,6 +121,7 @@ model Customer {
   billing_details     String?
   createdAt           DateTime          @default(now()) // * default value (now)
   updatedAt           DateTime          @updatedAt
+  deletedAt           DateTime?         @default(dbgenerated())
   ServiceLocation     ServiceLocation[]
   Waterbody           Waterbody[]
   Service             Service[]
@@ -247,6 +249,7 @@ model WorkOrder {
   createdAt              DateTime          @default(now()) // * default value (now)
   updatedAt              DateTime          @updatedAt
   ShoppingItem           ShoppingItem[]
+  deletedAt              DateTime?         @default(dbgenerated())
 }
 
 model ShoppingItem {
@@ -324,11 +327,16 @@ model Service {
   assigned_day        days
   status              String
   frequency           frequencyForService
+  rate                Int                 @default(0)
+  labor_cost          Int                 @default(0)
+  labor_cost_type     laborCostType       @default(NONE)
+  minutes_per_stop    Int                 @default(0)
   start_date          DateTime
   stop_date           String?
   createdAt           DateTime            @default(now()) // * default value (now)
   updatedAt           DateTime            @updatedAt
   ActiveService       ActiveService[]
+  deletedAt           DateTime?           @default(dbgenerated())
 }
 
 model Equipment {

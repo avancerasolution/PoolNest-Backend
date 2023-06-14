@@ -28,7 +28,6 @@ const getService = TrackError(async (req, res, next) => {
 
 
 //whenever a service is created this popualtes the active service by entries of for the current running work.
-
 const createService = TrackError(async (req, res, next) => {
     await prismaClient.$transaction(async (prisma) => {
         const serviceLocation = await prisma.serviceLocation.findFirst({ where: { service_location_id: req.body.service_location_id } })
@@ -80,7 +79,6 @@ const createService = TrackError(async (req, res, next) => {
             if (getNumberForFrequency(req.body.frequency) > numberOfWeeks) {//if the number of weeks we have is leess than frequency than the service will be created on every remaining week of the month
                 numberOfService = numberOfWeeks;
             }
-            let assigned_date = req.body.start_date;
             let increment = 0;
             console.log(numberOfService, "<==== final number of service to be created")
             for (let index = 0; index < numberOfService; index++) {
@@ -89,10 +87,10 @@ const createService = TrackError(async (req, res, next) => {
                     ...req.body,
                     service_id: result.service_id,
                     assigned_date: addDays(req.body.start_date, numberOfService == 2 ? increment * 2 : increment),
-                    rate: serviceLocation.rate,
-                    labor_cost: serviceLocation.labor_cost,
-                    labor_cost_type: serviceLocation.labor_cost_type,
-                    minutes_per_stop: serviceLocation.minutes_per_stop
+                    rate: req.body.rate,
+                    labor_cost: req.body.labor_cost,
+                    labor_cost_type: req.body.labor_cost_type,
+                    minutes_per_stop: req.body.minutes_per_stop
                 };
                 increment = increment + 7;
                 data.push(service)
@@ -119,17 +117,23 @@ const createService = TrackError(async (req, res, next) => {
 
 
 const deleteServiceByID = TrackError(async (req, res, next) => {
-    try {
-        const id = req.params.id
-        const result = await prismaClient.service.delete({ where: { service_id: id } })
-        res.status(200).send(result)
+    await prismaClient.$transaction(async (prisma) => {
+        try {
+            const id = req.params.id
+            const activeService = await prisma.activeService.deleteMany({ where: { service_id: id, assigned_date: { gte: new Date() }, includes: {} } })
+            const result = await prisma.service.delete({ where: { service_id: id } })
+            console.log(activeService, "<==== WOW");
+            res.status(200).send("result")
 
-    } catch (e) {
-        if (e.code === "P2025" || error.message.includes("record to delete does not exist")) {
-            return res.status(404).send({ success: false, message: "record does not exists" })
+
+        } catch (e) {
+            if (e.code === "P2025" || e.message.includes("record to delete does not exist")) {
+                return res.status(404).send({ success: false, message: "record does not exists" })
+            }
+            res.status(400).send({ success: false, message: e.message })
         }
-        res.status(400).send({ success: false, message: e })
-    }
+    })
+
 
 })
 
@@ -143,17 +147,30 @@ const deleteAllServices = TrackError(async (req, res, next) => {
 
 
 const updateServiceByID = TrackError(async (req, res, next) => {
-    try {
-        const id = req.params.id
-        const result = await prismaClient.service.update({ where: { service_id: id }, data: req.body })
-        res.status(200).send(result)
-
-    } catch (e) {
-        if (e.code === "P2025" || e.message.includes("Record to update does not exist")) {
-            return res.status(404).send({ success: false, message: "record  not exists" })
+    await prismaClient.$transaction(async (prisma) => {
+        try {
+            const currentDate = new Date();
+            const id = req.params.id
+            const result = await prisma.service.update({ where: { service_id: id }, data: req.body })
+            const activeServiceResult = await prisma.activeService.updateMany(
+                {
+                    where: {
+                        service_id: id,
+                        assigned_date: { gte: currentDate, lte: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1) }
+                    },
+                    data: req.body
+                });
+            console.log(activeServiceResult, "<=====")
+            res.status(200).send(result)
+        } catch (e) {
+            console.log(e, "<== ee")
+            if (e.code === "P2025" || e.message.includes("Record to update does not exist")) {
+                return res.status(404).send({ success: false, message: "record  not exists" })
+            }
+            res.status(400).send({ success: false, message: e.message })
         }
-        res.status(400).send({ success: false, message: e.message })
-    }
+    })
+
 })
 
 module.exports = { getService, createService, deleteServiceByID, getServices, updateServiceByID, deleteAllServices }

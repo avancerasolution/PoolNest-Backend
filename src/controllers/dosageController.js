@@ -64,6 +64,13 @@ const deleteAllDosages = TrackError(async (req, res, next) => {
 })
 
 
+// const wow = async () => {
+//     await prismaClient.dosage.deleteMany()
+// }
+
+// wow()
+
+
 const updateDosageByID = TrackError(async (req, res, next) => {
     try {
         const id = req.params.id
