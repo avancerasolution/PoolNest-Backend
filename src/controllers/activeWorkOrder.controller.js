@@ -11,13 +11,13 @@ const getActiveWorkOrders = TrackError(async (req, res, next) => {
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "active_work_order_id" }
-    const result = await paginate("activeWorkOrder", filters, options)
+    const result = await paginate("activeWorkOrder", filters, options, { Technician: true })
     res.status(200).send({ success: true, result });
 
 })
 const getActiveWorkOrder = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.activeWorkOrder.findFirst({ where: { active_work_order_id: id } });
+    const result = await prismaClient.activeWorkOrder.findFirst({ where: { active_work_order_id: id }, include: { Technician: true, Customer: true, Waterbody: true, Work_order: true, Service_location: true } });
     if (!result) {
         return res.status(404).send({ success: false, message: "ActiveWorkOrder doesnt not exists" });
     }

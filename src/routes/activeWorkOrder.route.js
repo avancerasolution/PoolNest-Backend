@@ -30,7 +30,7 @@ router.route("/")
 
 router.route("/:id")
     .get(verify(), validate(activeWorkOrderValidation.getActiveWorkOrder), activeWorkOrderController.getActiveWorkOrder)
-    .delete(verify(), validate(activeWorkOrderValidation.getActiveWorkOrder), activeWorkOrderController.deleteAllActiveWorkOrders)
-    .patch(verify(), validate(activeWorkOrderValidation.updateActiveWorkOrder), activeWorkOrderController.updateActiveWorkOrderByID);
+// .delete(verify(), validate(activeWorkOrderValidation.getActiveWorkOrder), activeWorkOrderController.deleteAllActiveWorkOrders)
+// .patch(verify(), validate(activeWorkOrderValidation.updateActiveWorkOrder), activeWorkOrderController.updateActiveWorkOrderByID);
 
 module.exports = router;

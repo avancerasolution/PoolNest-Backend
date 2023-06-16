@@ -32,7 +32,7 @@ async function paginate(modelName, filters, { pageNumber = 1, limit = 10, sortBy
 
 // javascript
 //   Copy code
-// cconst paginationResult = await paginate("user", { role: "ADMIN" }, 2, 10, "name", "desc");
+// const paginationResult = await paginate("user", { role: "ADMIN" }, 2, 10, "name", "desc");
 // console.log(paginationResult);
 //   In the example above, we're calling the paginate function and passing the model name as the first argument ("user" in this case), followed by the filters object ({ role: "ADMIN" } in this case), the page number (2), and the limit (10).
 

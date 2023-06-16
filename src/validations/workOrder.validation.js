@@ -63,4 +63,17 @@ const updateWorkOrder = {
 
 };
 
-module.exports = { createWorkOrder, getWorkOrder, getWorkOrders, updateWorkOrder };
+
+const completeWorkOrderByID = {
+    params: Joi.object().keys({
+        id: Joi.string().required(),
+    }),
+    body: Joi.object().keys({
+        status: Joi.string().required(),
+        description: Joi.string().required(),
+        service_date: Joi.date().required(),
+    }),
+
+};
+
+module.exports = { createWorkOrder, getWorkOrder, getWorkOrders, updateWorkOrder, completeWorkOrderByID };

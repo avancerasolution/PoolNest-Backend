@@ -10,10 +10,11 @@ const getServices = TrackError(async (req, res, next) => {
     const filters = pick(req.query, ["email", "name",])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
+        filters.deletedAt = null;
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "service_id" }
-    const result = await paginate("service", filters, options)
+    const result = await paginate("service", filters, options,{})
     res.status(200).send({ success: true, result });
 
 })
@@ -117,20 +118,24 @@ const createService = TrackError(async (req, res, next) => {
 
 
 const deleteServiceByID = TrackError(async (req, res, next) => {
+    const id = req.params.id
     await prismaClient.$transaction(async (prisma) => {
         try {
-            const id = req.params.id
-            const activeService = await prisma.activeService.deleteMany({ where: { service_id: id, assigned_date: { gte: new Date() }, includes: {} } })
+            const activeService = await prisma.activeService.deleteMany({ where: { service_id: id, assigned_date: { gte: new Date() } } })
             const result = await prisma.service.delete({ where: { service_id: id } })
-            console.log(activeService, "<==== WOW");
-            res.status(200).send("result")
+            return res.status(200).send(result)
 
 
         } catch (e) {
             if (e.code === "P2025" || e.message.includes("record to delete does not exist")) {
                 return res.status(404).send({ success: false, message: "record does not exists" })
             }
-            res.status(400).send({ success: false, message: e.message })
+            try {
+                const result = await prismaClient.service.update({ where: { service_id: id }, data: { deletedAt: new Date() } })
+            } catch (e) {
+                console.log(e)
+            }
+            return res.status(400).send({ success: false, message: e.message })
         }
     })
 
@@ -141,8 +146,10 @@ const deleteServiceByID = TrackError(async (req, res, next) => {
 
 const deleteAllServices = TrackError(async (req, res, next) => {
     const id = req.params.id;
-    const result = await prismaClient.service.deleteMany()
-    res.status(200).send(result)
+    try {
+        const result = await prismaClient.service.deleteMany()
+        res.status(200).send(result)
+    } catch (e) { }
 })
 
 

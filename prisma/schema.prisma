@@ -70,7 +70,7 @@ model User {
   WorkOrderType             WorkOrderType[]
   createdAt                 DateTime           @default(now()) // * default value (now)
   updatedAt                 DateTime           @updatedAt
-  deletedAt                 DateTime?          @default(dbgenerated())
+  deletedAt                 String?            @default(dbgenerated())
   Reading                   Reading[]
   Dosage                    Dosage[]
   ServiceChecklist          ServiceChecklist[]
@@ -121,7 +121,7 @@ model Customer {
   billing_details     String?
   createdAt           DateTime          @default(now()) // * default value (now)
   updatedAt           DateTime          @updatedAt
-  deletedAt           DateTime?         @default(dbgenerated())
+  deletedAt           String?           @default(dbgenerated())
   ServiceLocation     ServiceLocation[]
   Waterbody           Waterbody[]
   Service             Service[]
@@ -249,7 +249,7 @@ model WorkOrder {
   createdAt              DateTime          @default(now()) // * default value (now)
   updatedAt              DateTime          @updatedAt
   ShoppingItem           ShoppingItem[]
-  deletedAt              DateTime?         @default(dbgenerated())
+  deletedAt              String?           @default(dbgenerated())
 }
 
 model ShoppingItem {
@@ -318,11 +318,11 @@ model Service {
   admin_id            String
   Technician          User                @relation("ServiceToTechnician", fields: [technician_id], references: [id])
   technician_id       String
-  waterbody           Waterbody           @relation(fields: [waterbody_id], references: [waterbody_id])
+  Waterbody           Waterbody           @relation(fields: [waterbody_id], references: [waterbody_id])
   waterbody_id        String
   Service_location    ServiceLocation     @relation(fields: [service_location_id], references: [service_location_id])
   service_location_id String
-  customer            Customer            @relation(fields: [customer_id], references: [customer_id])
+  Customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
   assigned_day        days
   status              String
@@ -336,7 +336,7 @@ model Service {
   createdAt           DateTime            @default(now()) // * default value (now)
   updatedAt           DateTime            @updatedAt
   ActiveService       ActiveService[]
-  deletedAt           DateTime?           @default(dbgenerated())
+  deletedAt           String?             @default(dbgenerated())
 }
 
 model Equipment {
@@ -377,7 +377,7 @@ model ActiveService {
   service_location_id String
   Waterbody           Waterbody           @relation(fields: [waterbody_id], references: [waterbody_id])
   frequency           frequencyForService
-  customer            Customer            @relation(fields: [customer_id], references: [customer_id])
+  Customer            Customer            @relation(fields: [customer_id], references: [customer_id])
   customer_id         String
   waterbody_id        String
   start_date          DateTime
@@ -392,8 +392,8 @@ model ActiveService {
   total               Int?
   payment_method      String?
   payment_status      String?
-  dosages             Dosage[]
-  readings            Reading[]
+  Dosages             Dosage[]
+  Readings            Reading[]
   media               String[]            @default([])
   createdAt           DateTime            @default(now()) // * default value (now)
   updatedAt           DateTime            @updatedAt
@@ -416,12 +416,13 @@ model ActiveWorkOrder {
   Customer               Customer        @relation(fields: [customer_id], references: [customer_id])
   customer_id            String
   status                 String
-  work_order_status      String
+  // work_order_status      String
   description            String
   service_date           DateTime
   estimated_time_minutes Int
   labor_cost             Int
   price                  Int
+  media                  String[]        @default([])
   labor_cost_paid        Boolean?        @default(false)
   createdAt              DateTime        @default(now()) // * default value (now)
   updatedAt              DateTime        @updatedAt
