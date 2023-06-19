@@ -89,8 +89,8 @@ model User {
   ActiveWorkOrderAdmin      ActiveWorkOrder[]  @relation("ActiveWorkOrderToAdmin")
   ActiveWorkOrderTechnician ActiveWorkOrder[]  @relation("ActiveWorkOrderToTechnician")
   ShoppingItem              ShoppingItem[]
-
-  Tags Tags[]
+  Tags                      Tags[]
+  EmailDetail               emailDetail?
 }
 
 model Tags {
@@ -426,4 +426,24 @@ model ActiveWorkOrder {
   labor_cost_paid        Boolean?        @default(false)
   createdAt              DateTime        @default(now()) // * default value (now)
   updatedAt              DateTime        @updatedAt
+}
+
+model emailDetail {
+  email_detail_id        String   @id @default(uuid())
+  Admin                  User     @relation(fields: [admin_id], references: [id])
+  admin_id               String   @unique
+  from_name              String?
+  from_email             String?
+  company_name           String?
+  bcc_list               String[] @default([])
+  company_address        String?
+  city                   String?
+  state                  String?
+  zipcode                String?
+  email                  String?
+  mobile_no              String?
+  website                String?
+  logo                   String?
+  send_email_to_customer Boolean?
+  alternative_email      String?
 }

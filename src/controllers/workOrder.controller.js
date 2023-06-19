@@ -114,7 +114,7 @@ const completeWorkOrderByID = TrackError(async (req, res, next) => {
 
 //farz field  service_date,description,media,
 
-sendSimpleMessage({ subject: "wow", text: "wow", to: "bilal.aleem09@gmail.com", from: "bilal.aleem@avancerasolutions.com" })
+// sendSimpleMessage({ subject: "wow", text: "wow", to: "bilal.aleem09@gmail.com", from: "bilal.aleem@avancerasolutions.com" })
 
 
 module.exports = { getWorkOrders, createWorkOrder, deleteWorkOrderByID, getWorkOrder, updateWorkOrderByID, deleteAllWorkOrders, completeWorkOrderByID }
