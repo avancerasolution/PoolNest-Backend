@@ -3,7 +3,9 @@ const TrackError = require("../middleware/TrackError");
 const { paginate } = require("../utils/paginate.prisma");
 const pick = require("../utils/pick");
 const prismaClient = require("../utils/prisma.client")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const { Prisma } = require("@prisma/client");
+const { getDetailsAndSendMessage } = require("../services/sendGridMessaging.service");
 
 
 const getEmailDetails = async (req, res, next) => {
@@ -20,12 +22,14 @@ const getEmailDetails = async (req, res, next) => {
 }
 
 const getEmailDetail = TrackError(async (req, res, next) => {
-    const id = req.params.id;
-    const result = await prismaClient.emailDetail.findFirst({ where: { email_detail_id: id }, include: { Admin: true } });
-    if (!result) {
-        return res.status(404).send({ success: false, message: "no email details foundF" });
-    }
-    res.status(200).send(result)
+    // const id = req.params.id;
+    // const result = await prismaClient.emailDetail.findFirst({ where: { email_detail_id: id }, include: { Admin: true } });
+    // if (!result) {
+    //     return res.status(404).send({ success: false, message: "no email details foundF" });
+    // }
+    // res.status(200).send(result)
+    const result = getDetailsAndSendMessage({ admin_id: req.user.admin_id });
+
 })
 
 
@@ -39,11 +43,11 @@ const createEmailDetail = TrackError(async (req, res, next) => {
         const result = await prismaClient.emailDetail.create({ data: req.body, })
         res.status(201).send({ success: true, result })
     } catch (e) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-            console.error('Unique constraint violation error:', error.meta);
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+            console.error('Unique constraint violation error:', e.meta);
             return res.status(400).send({ success: false, message: "email already exists" })
         } else {
-            console.error('Unique constraint violation error:', error.meta);
+            console.error('Unique constraint violation error:', e.meta);
             return res.status(400).send({ success: false, message: "something went wrong , oop!" })
         }
     }

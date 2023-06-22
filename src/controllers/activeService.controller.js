@@ -83,6 +83,10 @@ const updateActiveServiceByID = TrackError(async (req, res, next) => {
             req.body.media = req.files.map((item) => (item.filename))
         }
         const id = req.params.id
+        if (req.body.status === "completed") {// this code will run the active service is completed
+            const getEmailDetails = await prismaClient.emailDetail.findFirst({ admin_id });
+            
+        }
         const result = await prismaClient.activeService.update({ where: { active_service_id: id }, data: req.body })
         res.status(200).send(result)
 
