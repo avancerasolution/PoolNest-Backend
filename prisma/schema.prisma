@@ -119,6 +119,7 @@ model Customer {
   company_address     String?
   billing_address     String?
   billing_details     String?
+  do_not_disturb      Boolean?          @default(false)
   createdAt           DateTime          @default(now()) // * default value (now)
   updatedAt           DateTime          @updatedAt
   deletedAt           String?           @default(dbgenerated())

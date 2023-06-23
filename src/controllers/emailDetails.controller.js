@@ -20,16 +20,23 @@ const getEmailDetails = async (req, res, next) => {
 
 
 }
-
+//tech,customer,email details
+// what i have , actvie service ,admin_id, and  
 const getEmailDetail = TrackError(async (req, res, next) => {
-    // const id = req.params.id;
+    const id = req.params.id;
     // const result = await prismaClient.emailDetail.findFirst({ where: { email_detail_id: id }, include: { Admin: true } });
     // if (!result) {
     //     return res.status(404).send({ success: false, message: "no email details foundF" });
     // }
     // res.status(200).send(result)
-    const result = getDetailsAndSendMessage({ admin_id: req.user.admin_id });
-
+    const activeService = await prismaClient.activeService.findUnique({ where: { active_service_id: id }, include: { Customer: true, Technician: true } })
+    const emailDetails = await prismaClient.emailDetail.findFirst({ where: { admin_id: req.user.admin_id } });
+    console.log(emailDetails, "<=== email")
+    console.log(req.user, "user")
+    console.log(activeService, "<=== as")
+    if (!emailDetails) { return res.status(400).send({ success: false, message: "Invalid email details" }) }
+    // const result = getDetailsAndSendMessage(activeService.Technician, activeService.Customer, emailDetails);
+    res.send("wow")
 })
 
 
