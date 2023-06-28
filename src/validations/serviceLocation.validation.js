@@ -27,7 +27,7 @@ const createServiceLocation = {
     }),
 };
 
-const getWaterbodies = {
+const getServiceLocations = {
     query: Joi.object().keys({
         name: Joi.string(),
         color_code: Joi.string(),
@@ -75,4 +75,4 @@ const updateServiceLocation = {
 
 };
 
-module.exports = { createServiceLocation, getWaterbodies, getServiceLocation, updateServiceLocation };
+module.exports = { createServiceLocation, getServiceLocations, getServiceLocation, updateServiceLocation };

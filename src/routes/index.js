@@ -17,6 +17,8 @@ const activeServiceRoute = require("./activeService.route")
 const activeWorkOrderRoute = require("./activeWorkOrder.route")
 const tagRoute = require("./tag.route")
 const emailDetail = require("./emailDetail.route")
+const serviceMailDetail = require("./serviceMailDetail.route");
+const serviceSkippedMailDetailRoute = require("./serviceSkippedMailDetail.route")
 const router = express.Router();
 
 router.use("/user", userRoute)
@@ -37,5 +39,7 @@ router.use("/activeService", activeServiceRoute)
 router.use("/activeWorkOrder", activeWorkOrderRoute)
 router.use("/tag", tagRoute)
 router.use("/emailDetail", emailDetail)
+router.use("/serviceMailDetail", serviceMailDetail)
+router.use("/serviceSkippedMailDetail", serviceSkippedMailDetailRoute)
 
 module.exports = router;

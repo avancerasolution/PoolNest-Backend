@@ -19,7 +19,7 @@ const serviceLocationValidation = require("../validations/serviceLocation.valida
  * 
  */
 router.route("/")
-    .get(verify(), validate(serviceLocationValidation.getWaterbodies), serviceLocationController.getServiceLocations)
+    .get(verify(), validate(serviceLocationValidation.getServiceLocation), serviceLocationController.getServiceLocations)
     .post(verify(), validate(serviceLocationValidation.createServiceLocation), serviceLocationController.createServiceLocation)
 
 router.route("/:id")

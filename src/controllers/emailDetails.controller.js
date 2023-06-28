@@ -30,12 +30,14 @@ const getEmailDetail = TrackError(async (req, res, next) => {
     // }
     // res.status(200).send(result)
     const activeService = await prismaClient.activeService.findUnique({ where: { active_service_id: id }, include: { Customer: true, Technician: true } })
+    if (!activeService) return res.status(400).send({ success: false, message: "invalid active service id" })
     const emailDetails = await prismaClient.emailDetail.findFirst({ where: { admin_id: req.user.admin_id } });
     console.log(emailDetails, "<=== email")
     console.log(req.user, "user")
     console.log(activeService, "<=== as")
     if (!emailDetails) { return res.status(400).send({ success: false, message: "Invalid email details" }) }
-    // const result = getDetailsAndSendMessage(activeService.Technician, activeService.Customer, emailDetails);
+    const result = getDetailsAndSendMessage(activeService.Technician, activeService.Customer, emailDetails);
+
     res.send("wow")
 })
 
@@ -86,7 +88,7 @@ const updateEmailDetailByID = TrackError(async (req, res, next) => {
         if (req.file) {
             req.body.logo = req.file.filename;
         }
-        const result = await prismaClient.emailDetail.update({ where: { id: id }, data: req.body })
+        const result = await prismaClient.emailDetail.update({ where: { email_detail_id: id }, data: req.body })
         res.status(200).send(result)
 
     } catch (e) {

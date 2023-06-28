@@ -6,6 +6,7 @@ const createReading = {
         description: Joi.string().required(),
         unit_of_measurement: Joi.string().required(),
         values: Joi.array().items(Joi.number()).required(),
+        active_service_id: Joi.string().uuid().required()
     }),
 };
 

@@ -48,15 +48,20 @@ enum days {
   SUNDAY
 }
 
+enum serviceMailDetailType {
+  completion
+  skip
+}
+
 model User {
-  id                        String             @id @default(uuid())
-  email                     String             @unique
+  id                        String                     @id @default(uuid())
+  email                     String                     @unique
   first_name                String
   last_name                 String
-  username                  String             @unique
+  username                  String                     @unique
   user_type                 Role //enum 
   password                  String
-  is_active                 Boolean            @default(true)
+  is_active                 Boolean                    @default(true)
   color_code                String?
   see_other_tech            Boolean?
   manage_admin_panel        Boolean?
@@ -64,33 +69,35 @@ model User {
   manage_route_stops        Boolean?
   rearrange_routes          Boolean?
   admin_id                  String?
-  Admin                     User?              @relation("AdminToTechnician", fields: [admin_id], references: [id])
-  Technicians               User[]             @relation("AdminToTechnician")
+  Admin                     User?                      @relation("AdminToTechnician", fields: [admin_id], references: [id])
+  Technicians               User[]                     @relation("AdminToTechnician")
   Customer                  Customer[]
   WorkOrderType             WorkOrderType[]
-  createdAt                 DateTime           @default(now()) // * default value (now)
-  updatedAt                 DateTime           @updatedAt
-  deletedAt                 String?            @default(dbgenerated())
+  createdAt                 DateTime                   @default(now()) // * default value (now)
+  updatedAt                 DateTime                   @updatedAt
+  deletedAt                 String?                    @default(dbgenerated())
   Reading                   Reading[]
   Dosage                    Dosage[]
   ServiceChecklist          ServiceChecklist[]
-  ServiceLocationAdmin      ServiceLocation[]  @relation("AdminToServiceLocation")
-  Waterbody                 Waterbody[]        @relation("WaterbodytoAdmin")
-  WaterbodyTechnician       Waterbody[]        @relation("WaterbodytoTechnician")
-  Service                   Service[]          @relation("ServiceToAdmin")
-  ServiceTechnician         Service[]          @relation("ServiceToTechnician")
-  WorkOrderTechnician       WorkOrder[]        @relation("WorkOrderToTechnician")
-  WorkOrderAdmin            WorkOrder[]        @relation("WorkOrderToAdmin")
+  ServiceLocationAdmin      ServiceLocation[]          @relation("AdminToServiceLocation")
+  Waterbody                 Waterbody[]                @relation("WaterbodytoAdmin")
+  WaterbodyTechnician       Waterbody[]                @relation("WaterbodytoTechnician")
+  Service                   Service[]                  @relation("ServiceToAdmin")
+  ServiceTechnician         Service[]                  @relation("ServiceToTechnician")
+  WorkOrderTechnician       WorkOrder[]                @relation("WorkOrderToTechnician")
+  WorkOrderAdmin            WorkOrder[]                @relation("WorkOrderToAdmin")
   Equipment                 Equipment[]
   ItemNeeded                ItemNeeded[]
-  ActiveServiceTechnician   ActiveService[]    @relation("TechnicianToActiveService")
-  ActiveServiceAdmin        ActiveService[]    @relation("AdminToActiveService")
-  TechnicianServiceLocation ServiceLocation[]  @relation("TechnicianToServiceLocation")
-  ActiveWorkOrderAdmin      ActiveWorkOrder[]  @relation("ActiveWorkOrderToAdmin")
-  ActiveWorkOrderTechnician ActiveWorkOrder[]  @relation("ActiveWorkOrderToTechnician")
+  ActiveServiceTechnician   ActiveService[]            @relation("TechnicianToActiveService")
+  ActiveServiceAdmin        ActiveService[]            @relation("AdminToActiveService")
+  TechnicianServiceLocation ServiceLocation[]          @relation("TechnicianToServiceLocation")
+  ActiveWorkOrderAdmin      ActiveWorkOrder[]          @relation("ActiveWorkOrderToAdmin")
+  ActiveWorkOrderTechnician ActiveWorkOrder[]          @relation("ActiveWorkOrderToTechnician")
   ShoppingItem              ShoppingItem[]
   Tags                      Tags[]
   EmailDetail               emailDetail?
+  ServiceMailDetail         ServiceMailDetail[]
+  ServiceSkippedMailDetail  ServiceSkippedMailDetail[]
 }
 
 model Tags {
@@ -193,7 +200,6 @@ model Waterbody {
   WorkOrder           WorkOrder[]
   Equipment           Equipment[]
   ItemNeeded          ItemNeeded[]
-  ServiceChecklist    ServiceChecklist[]
   ActiveService       ActiveService[]
   ActiveWorkOrder     ActiveWorkOrder[]
   ShoppingItem        ShoppingItem[]
@@ -302,15 +308,18 @@ model Reading {
 }
 
 model ServiceChecklist {
-  service_checklist_id    String    @id @default(uuid())
-  Admin                   User      @relation(fields: [admin_id], references: [id])
+  service_checklist_id    String         @id @default(uuid())
+  Admin                   User           @relation(fields: [admin_id], references: [id])
+  Service                 Service        @relation(fields: [service_id], references: [service_id])
+  service_id              String
+  ActiveService           ActiveService? @relation(fields: [active_service_id], references: [active_service_id])
+  active_service_id       String?
   admin_id                String
   description             String
   description_on_complete String
-  createdAt               DateTime  @default(now()) // * default value (now)
-  updatedAt               DateTime  @updatedAt
-  Waterbody               Waterbody @relation(fields: [waterbody_id], references: [waterbody_id])
-  waterbody_id            String
+  createdAt               DateTime       @default(now()) // * default value (now)
+  updatedAt               DateTime       @updatedAt
+  serviceServie_id        String
 }
 
 model Service {
@@ -338,6 +347,7 @@ model Service {
   updatedAt           DateTime            @updatedAt
   ActiveService       ActiveService[]
   deletedAt           String?             @default(dbgenerated())
+  ServiceChecklist    ServiceChecklist[]
 }
 
 model Equipment {
@@ -398,6 +408,7 @@ model ActiveService {
   media               String[]            @default([])
   createdAt           DateTime            @default(now()) // * default value (now)
   updatedAt           DateTime            @updatedAt
+  ServiceChecklist    ServiceChecklist[]
 }
 
 model ActiveWorkOrder {
@@ -447,4 +458,33 @@ model emailDetail {
   logo                   String?
   send_email_to_customer Boolean?
   alternative_email      String?
+}
+
+model ServiceMailDetail {
+  service_mail_detail_id String  @id @default(uuid())
+  Admin                  User    @relation(fields: [admin_id], references: [id])
+  admin_id               String  @unique
+  subject                String  @default("Pool Service Report for {DATE}")
+  header                 String  @default("Your Pool Is Now Sparkling Clean")
+  message                String  @default("Thanks for choosing us to keep your pool looking great! Attached is a readout of what is going on with your {SERVICE LOCATION NAME} {POOL NAME} for the week. If you have any questions we're always here to answer!")
+  footer                 String  @default("Have a great day!")
+  include_reading        Boolean @default(false)
+  include_dosage         Boolean @default(false)
+  include_checklist     Boolean @default(false)
+  include_tech           Boolean @default(false)
+  include_media          Boolean @default(false)
+}
+
+model ServiceSkippedMailDetail {
+  service_skipped_mail_id String  @id @default(uuid())
+  Admin                   User    @relation(fields: [admin_id], references: [id])
+  admin_id                String  @unique
+  include_tech_reason     Boolean @default(false)
+  include_reason_in_mail  Boolean @default(false)
+  email_office            Boolean @default(false)
+  email_customer          Boolean @default(false)
+  subject                 String  @default("Your service on {DATE} could not be completed")
+  header                  String  @default("We were unable to service your pool")
+  message                 String  @default("Hi {CUSTOMER} \n\n We're sorry that we were unable to service your pool today,Please contact us for more information")
+  footer                  String  @default("Have a great day")
 }

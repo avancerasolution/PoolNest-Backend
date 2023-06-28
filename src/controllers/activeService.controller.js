@@ -1,8 +1,10 @@
+const httpStatus = require("http-status");
 const TrackError = require("../middleware/TrackError");
 const { getDateRange } = require("../utils/helperFunction");
 const { paginate } = require("../utils/paginate.prisma");
 const pick = require("../utils/pick");
-const prismaClient = require("../utils/prisma.client")
+const prismaClient = require("../utils/prisma.client");
+const { onServiceCompleteMail } = require("../services/sendGridMessaging.service");
 
 
 const getActiveServices = TrackError(async (req, res, next) => {
@@ -30,7 +32,7 @@ const getActiveServices = TrackError(async (req, res, next) => {
 
 const getActiveService = TrackError(async (req, res, next) => {
     const id = req.params.id
-    const result = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { dosages: true, readings: true, technician: true, customer: true, Waterbody: true, Service_location: true } });
+    const result = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { Dosages: true, Readings: true, Technician: true, Customer: true, Waterbody: true, Service_location: true } });
     if (!result) {
         return res.status(404).send({ success: false, message: "Result doesnt not exists" });
     }
@@ -79,16 +81,26 @@ const deleteActiveServices = TrackError(async (req, res, next) => {
 
 const updateActiveServiceByID = TrackError(async (req, res, next) => {
     try {
-        if (req.files.media) {
-            req.body.media = req.files.map((item) => (item.filename))
+        if (req.files) {
+            if (req.files.media) {
+                req.body.media = req.files.map((item) => (item.filename))
+            }
         }
         const id = req.params.id
-        if (req.body.status === "completed") {// this code will run the active service is completed
-            const getEmailDetails = await prismaClient.emailDetail.findFirst({ admin_id });
-            
+        //verify active service
+        const serviceDetails = await prismaClient.activeService.findFirst({ where: { active_service_id: id }, include: { Service_location: true, Customer: true, Technician: true, Waterbody: true, Dosages: true, Readings: true, ServiceChecklist: true } })
+        if (!serviceDetails) {
+            return res.status(httpStatus.BAD_REQUEST).send({ success: false, message: "invalid actice_service_id" })
         }
-        const result = await prismaClient.activeService.update({ where: { active_service_id: id }, data: req.body })
-        res.status(200).send(result)
+        const mailDetails = await prismaClient.emailDetail.findFirst({ where: { admin_id: req.user.admin_id } });
+        if (req.body.status === "completed") {// this code will run the active service is completed
+            const onServiceCompleteMailDetails = await prismaClient.serviceMailDetail.findFirst({ where: { admin_id: req.user.admin_id } })
+            console.log(onServiceCompleteMailDetails, "<--- the puck")
+            const sendServiceCompletionMail = await onServiceCompleteMail(serviceDetails, mailDetails, onServiceCompleteMailDetails)
+
+        }
+        // const result = await prismaClient.activeService.update({ where: { active_service_id: id }, data: req.body })
+        res.status(200).send("result")
 
     } catch (e) {
         if (e.code === "P2025" || e.message.includes("Record to update does not exist")) {
