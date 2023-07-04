@@ -14,7 +14,7 @@ const getServices = TrackError(async (req, res, next) => {
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "service_id" }
-    const result = await paginate("service", filters, options,{})
+    const result = await paginate("service", filters, options)
     res.status(200).send({ success: true, result });
 
 })
