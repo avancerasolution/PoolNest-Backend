@@ -22,7 +22,7 @@ const getUsers = async (req, res, next) => {
 
 const getUser = TrackError(async (req, res, next) => {
     const id = req.params.id;
-    const result = await prismaClient.user.findFirst({ where: { id: id }, include: { admin: true } });
+    const result = await prismaClient.user.findFirst({ where: { id: id }, include: { Admin: true } });
     if (!result) {
         return res.status(404).send("no user found");
     }
@@ -44,10 +44,12 @@ const createUser = TrackError(async (req, res, next) => {
         return res.status(400).send("email or username already exists")
     }
     req.body.password = await bcrypt.hash(req.body.password, 8)
-    const result = await prismaClient.user.create({ data: req.body, })
-
+    const result = await prismaClient.user.create({ data: req.body })
+    console.log(result, "<=== wow")
     if (result.user_type = "SuperAdmin" && !result.admin_id) {
         await prismaClient.user.update({ where: { id: result.id }, data: { admin_id: result.id } })
+        await prismaClient.serviceMailDetail.create({ data: { admin_id: result.id } })
+        await prismaClient.serviceSkippedMailDetail.create({ data: { admin_id: result.id } })
     }
     res.status(201).send({ success: true, result })
 })

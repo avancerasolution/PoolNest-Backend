@@ -95,7 +95,6 @@ const updateActiveServiceByID = TrackError(async (req, res, next) => {
         const mailDetails = await prismaClient.emailDetail.findFirst({ where: { admin_id: req.user.admin_id } });
         if (req.body.status === "completed") {// this code will run the active service is completed
             const onServiceCompleteMailDetails = await prismaClient.serviceMailDetail.findFirst({ where: { admin_id: req.user.admin_id } })
-            console.log(onServiceCompleteMailDetails, "<--- the puck")
             const sendServiceCompletionMail = await onServiceCompleteMail(serviceDetails, mailDetails, onServiceCompleteMailDetails)
 
         }

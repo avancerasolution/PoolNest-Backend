@@ -12,13 +12,12 @@ const getServiceMailDetails = async (req, res, next) => {
     const filters = pick(req.query, ["email", "color_code", "first_name", "last_name"])
     if (req.user.user_type !== "Client") {
         filters.admin_id = req.user.admin_id;
+        console.log("not client")
     }
     const options = pick(req.query, ["pageNumber", "limit", "sortByField", "sortOrder"])
     if (!options.sortBy) { options.sortBy = "service_mail_detail_id" }
     const result = await paginate("serviceMailDetail", filters, options)
     res.status(200).send({ success: true, result });
-
-
 }
 //tech,customer,email details
 // what i have , actvie service ,admin_id, and  
@@ -35,16 +34,21 @@ const getServiceMailDetail = TrackError(async (req, res, next) => {
 
 
 const createServiceMailDetail = TrackError(async (req, res, next) => {
+    console.log(req.body, "<==== wow")
+    console.log(req.user, "<==== wow")
     try {
-        req.body.admin_id = req.user.admin_id;
+        if (req.user.user_type !== "Client") {
+            console.log("not client")
+            req.body.admin_id = req.user.admin_id;
+        }
         const result = await prismaClient.serviceMailDetail.create({ data: req.body, })
         res.status(201).send({ success: true, result })
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
-            console.error('Unique constraint violation error:', e.meta);
+            console.error('Unique constraint violation error:', e);
             return res.status(400).send({ success: false, message: "admin_id already exists" })
         } else {
-            console.error('Unique constraint violation error:', e.meta);
+            console.error('Unique constraint violation error:', e);
             return res.status(400).send({ success: false, message: "something went wrong , oops!" })
         }
     }
